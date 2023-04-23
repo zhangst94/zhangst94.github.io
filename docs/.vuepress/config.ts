@@ -127,7 +127,7 @@ export default defineConfig4CustomTheme<VdoingThemeConfig>({
 
     // 博主信息 (显示在首页侧边栏)
     blogger: {
-      avatar: 'https://cdn.jsdelivr.net/gh/zhangst94/images/%E7%A8%8B%E5%BA%8F%E5%91%98.png',
+      avatar: '/imgs/t.jpg',
       name: 'Zhang',
       slogan: '运维小学生',
     },
