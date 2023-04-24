@@ -10,11 +10,11 @@ bannerBg: /img/bg.jpg # auto => 网格纹背景(有bodyBgImg时无背景)，默�
 features: # 可选的
   - title: 运维
     details: Linux、docker、K8S等
-    link: /web/ # 可选
+    link: /yunwei/ # 可选
 #    imgUrl: /img/web.png # 可选
-  - title: 编程
+  - title: 工作
     details: shell、python、golang
-    link: /编程/
+    link: /work/
 #    imgUrl: /img/ui.png
   - title: 读书笔记
     details: 财务自由之路
