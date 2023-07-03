@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>K8S监控指标梳理 | 运维技术笔记</title>
+    <meta name="generator" content="VuePress 1.9.5">
+    <link rel="icon" href="/imgs/favicon.ico">
+    <meta name="description" content="运维技术博客，积跬步以至千里，致敬每个爱学习的你">
+    <meta name="keywords" content="个人技术博客,技术文档">
+    <meta name="theme-color" content="#11a8cd">
+    
+    <link rel="preload" href="/assets/css/0.styles.29d22670.css" as="style"><link rel="preload" href="/assets/js/app.29507997.js" as="script"><link rel="preload" href="/assets/js/2.e4478836.js" as="script"><link rel="preload" href="/assets/js/112.2dceab0e.js" as="script"><link rel="prefetch" href="/assets/js/10.52ab9d51.js"><link rel="prefetch" href="/assets/js/100.1dfc8ac4.js"><link rel="prefetch" href="/assets/js/101.eb1804b5.js"><link rel="prefetch" href="/assets/js/102.f854c9f8.js"><link rel="prefetch" href="/assets/js/103.d1bad4dc.js"><link rel="prefetch" href="/assets/js/104.96d01c3a.js"><link rel="prefetch" href="/assets/js/105.a536f3c3.js"><link rel="prefetch" href="/assets/js/106.f5970192.js"><link rel="prefetch" href="/assets/js/107.d139e728.js"><link rel="prefetch" href="/assets/js/108.bf47ca38.js"><link rel="prefetch" href="/assets/js/109.5d7e1db3.js"><link rel="prefetch" href="/assets/js/11.e6decff9.js"><link rel="prefetch" href="/assets/js/110.ee238630.js"><link rel="prefetch" href="/assets/js/111.0bb5543e.js"><link rel="prefetch" href="/assets/js/113.a0c9ee05.js"><link rel="prefetch" href="/assets/js/114.d7ac497d.js"><link rel="prefetch" href="/assets/js/115.22bc0e52.js"><link rel="prefetch" href="/assets/js/116.ad5f11ce.js"><link rel="prefetch" href="/assets/js/117.90e8f13c.js"><link rel="prefetch" href="/assets/js/118.98e78063.js"><link rel="prefetch" href="/assets/js/119.c5d31497.js"><link rel="prefetch" href="/assets/js/12.f2371008.js"><link rel="prefetch" href="/assets/js/120.38e50cf1.js"><link rel="prefetch" href="/assets/js/121.65d367b0.js"><link rel="prefetch" href="/assets/js/122.e14f6cad.js"><link rel="prefetch" href="/assets/js/123.5bdb4ec7.js"><link rel="prefetch" href="/assets/js/124.f9efa255.js"><link rel="prefetch" href="/assets/js/125.1686d3a4.js"><link rel="prefetch" href="/assets/js/126.a2fc7fc9.js"><link rel="prefetch" href="/assets/js/127.e68425f1.js"><link rel="prefetch" href="/assets/js/128.96597b83.js"><link rel="prefetch" href="/assets/js/129.0cdcef19.js"><link rel="prefetch" href="/assets/js/13.976dcc2d.js"><link rel="prefetch" href="/assets/js/130.5c999995.js"><link rel="prefetch" href="/assets/js/131.07f50df8.js"><link rel="prefetch" href="/assets/js/132.9689c2f3.js"><link rel="prefetch" href="/assets/js/133.a1cee72f.js"><link rel="prefetch" href="/assets/js/134.c5af2a70.js"><link rel="prefetch" href="/assets/js/135.aee6ed93.js"><link rel="prefetch" href="/assets/js/136.8e172c48.js"><link rel="prefetch" href="/assets/js/137.0adfc540.js"><link rel="prefetch" href="/assets/js/138.6084d6d8.js"><link rel="prefetch" href="/assets/js/139.489f71a4.js"><link rel="prefetch" href="/assets/js/14.9625e562.js"><link rel="prefetch" href="/assets/js/140.2f7e3ca4.js"><link rel="prefetch" href="/assets/js/141.a6efd358.js"><link rel="prefetch" href="/assets/js/142.f48b458e.js"><link rel="prefetch" href="/assets/js/143.e964ba84.js"><link rel="prefetch" href="/assets/js/144.a70db263.js"><link rel="prefetch" href="/assets/js/145.554fa780.js"><link rel="prefetch" href="/assets/js/146.ec056ea7.js"><link rel="prefetch" href="/assets/js/147.21763bff.js"><link rel="prefetch" href="/assets/js/148.f106f8c4.js"><link rel="prefetch" href="/assets/js/15.359f374f.js"><link rel="prefetch" href="/assets/js/16.c7287c75.js"><link rel="prefetch" href="/assets/js/17.353c13d6.js"><link rel="prefetch" href="/assets/js/18.f68ff45f.js"><link rel="prefetch" href="/assets/js/19.6def60bc.js"><link rel="prefetch" href="/assets/js/20.33101fec.js"><link rel="prefetch" href="/assets/js/21.cd621a35.js"><link rel="prefetch" href="/assets/js/22.dd3fb27f.js"><link rel="prefetch" href="/assets/js/23.8faf9ba1.js"><link rel="prefetch" href="/assets/js/24.6d38d3b0.js"><link rel="prefetch" href="/assets/js/25.5e0c0ec4.js"><link rel="prefetch" href="/assets/js/26.57fcae39.js"><link rel="prefetch" href="/assets/js/27.1922f4aa.js"><link rel="prefetch" href="/assets/js/28.6fd6b8ff.js"><link rel="prefetch" href="/assets/js/29.3b77fcd7.js"><link rel="prefetch" href="/assets/js/3.602cbeca.js"><link rel="prefetch" href="/assets/js/30.170e6004.js"><link rel="prefetch" href="/assets/js/31.b5c50344.js"><link rel="prefetch" href="/assets/js/32.941a7bbd.js"><link rel="prefetch" href="/assets/js/33.55bc7e64.js"><link rel="prefetch" href="/assets/js/34.a66c1505.js"><link rel="prefetch" href="/assets/js/35.153f5521.js"><link rel="prefetch" href="/assets/js/36.c04269f6.js"><link rel="prefetch" href="/assets/js/37.6e2cdeee.js"><link rel="prefetch" href="/assets/js/38.cb921e43.js"><link rel="prefetch" href="/assets/js/39.2ed36326.js"><link rel="prefetch" href="/assets/js/4.94dce7a4.js"><link rel="prefetch" href="/assets/js/40.209e9286.js"><link rel="prefetch" href="/assets/js/41.afddfad2.js"><link rel="prefetch" href="/assets/js/42.a013330b.js"><link rel="prefetch" href="/assets/js/43.850a36c0.js"><link rel="prefetch" href="/assets/js/44.c084f0c9.js"><link rel="prefetch" href="/assets/js/45.3a22fe9e.js"><link rel="prefetch" href="/assets/js/46.c953397d.js"><link rel="prefetch" href="/assets/js/47.a7665920.js"><link rel="prefetch" href="/assets/js/48.21127c7a.js"><link rel="prefetch" href="/assets/js/49.86a92706.js"><link rel="prefetch" href="/assets/js/5.a039f57b.js"><link rel="prefetch" href="/assets/js/50.aff5e710.js"><link rel="prefetch" href="/assets/js/51.d01884ad.js"><link rel="prefetch" href="/assets/js/52.a9f6dcae.js"><link rel="prefetch" href="/assets/js/53.4a985586.js"><link rel="prefetch" href="/assets/js/54.1fd46a16.js"><link rel="prefetch" href="/assets/js/55.37466240.js"><link rel="prefetch" href="/assets/js/56.00d4c767.js"><link rel="prefetch" href="/assets/js/57.179e219b.js"><link rel="prefetch" href="/assets/js/58.85c01200.js"><link rel="prefetch" href="/assets/js/59.a32f53eb.js"><link rel="prefetch" href="/assets/js/6.124fbfa2.js"><link rel="prefetch" href="/assets/js/60.544c5367.js"><link rel="prefetch" href="/assets/js/61.1745d380.js"><link rel="prefetch" href="/assets/js/62.77f96f64.js"><link rel="prefetch" href="/assets/js/63.3a18c3c3.js"><link rel="prefetch" href="/assets/js/64.5c555100.js"><link rel="prefetch" href="/assets/js/65.ad178295.js"><link rel="prefetch" href="/assets/js/66.ab572eed.js"><link rel="prefetch" href="/assets/js/67.805dd0d4.js"><link rel="prefetch" href="/assets/js/68.b86d7bd3.js"><link rel="prefetch" href="/assets/js/69.f1382968.js"><link rel="prefetch" href="/assets/js/7.be0b0694.js"><link rel="prefetch" href="/assets/js/70.52143576.js"><link rel="prefetch" href="/assets/js/71.162453f3.js"><link rel="prefetch" href="/assets/js/72.8f5a7a45.js"><link rel="prefetch" href="/assets/js/73.e57a96e8.js"><link rel="prefetch" href="/assets/js/74.88747955.js"><link rel="prefetch" href="/assets/js/75.732edfec.js"><link rel="prefetch" href="/assets/js/76.4ca1f9a6.js"><link rel="prefetch" href="/assets/js/77.5c781a7f.js"><link rel="prefetch" href="/assets/js/78.03c79f47.js"><link rel="prefetch" href="/assets/js/79.10a7edb9.js"><link rel="prefetch" href="/assets/js/8.be12edfa.js"><link rel="prefetch" href="/assets/js/80.dcc25a8c.js"><link rel="prefetch" href="/assets/js/81.4f5950c7.js"><link rel="prefetch" href="/assets/js/82.bdb20540.js"><link rel="prefetch" href="/assets/js/83.1feae6d1.js"><link rel="prefetch" href="/assets/js/84.4d61c624.js"><link rel="prefetch" href="/assets/js/85.56c77596.js"><link rel="prefetch" href="/assets/js/86.f354f60e.js"><link rel="prefetch" href="/assets/js/87.c87a28bc.js"><link rel="prefetch" href="/assets/js/88.49d3a2e3.js"><link rel="prefetch" href="/assets/js/89.86033e0e.js"><link rel="prefetch" href="/assets/js/9.740f4ad5.js"><link rel="prefetch" href="/assets/js/90.8a275495.js"><link rel="prefetch" href="/assets/js/91.d964e2b8.js"><link rel="prefetch" href="/assets/js/92.61c34791.js"><link rel="prefetch" href="/assets/js/93.757f983e.js"><link rel="prefetch" href="/assets/js/94.21f343ae.js"><link rel="prefetch" href="/assets/js/95.27d82a02.js"><link rel="prefetch" href="/assets/js/96.4a23e86a.js"><link rel="prefetch" href="/assets/js/97.440bc5c8.js"><link rel="prefetch" href="/assets/js/98.82122a7f.js"><link rel="prefetch" href="/assets/js/99.d4ccc686.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.29d22670.css">
+  </head>
+  <body class="theme-mode-light">
+    <div id="app" data-server-rendered="true"><div class="theme-container sidebar-open have-rightmenu"><header class="navbar blur"><div title="目录" class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/imgs/logo.png" alt="运维技术笔记" class="logo"> <span class="site-name can-hide">运维技术笔记</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">首页</a></div><div class="nav-item"><a href="/yunwei/" class="nav-link">运维</a></div><div class="nav-item"><a href="/work/" class="nav-link">工作</a></div><div class="nav-item"><a href="/book/" class="nav-link">读书笔记</a></div><div class="nav-item"><a href="/more/" class="nav-link">更多</a></div><div class="nav-item"><a href="/about/" class="nav-link">关于</a></div><div class="nav-item"><a href="/pages/beb6c0bd8a66cea6/" class="nav-link">收藏</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="索引" class="dropdown-title"><a href="/archives/" class="link-title">索引</a> <span class="title" style="display:none;">索引</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/categories/" class="nav-link">分类</a></li><li class="dropdown-item"><!----> <a href="/tags/" class="nav-link">标签</a></li><li class="dropdown-item"><!----> <a href="/archives/" class="nav-link">归档</a></li></ul></div></div> <a href="https://github.com/zhangst94/zhangst94.github.io" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar-hover-trigger"></div> <aside class="sidebar" style="display:none;"><div class="blogger"><img src="/imgs/t.jpg"> <div class="blogger-info"><h3>Zhang</h3> <span>运维小学生</span></div></div> <nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">首页</a></div><div class="nav-item"><a href="/yunwei/" class="nav-link">运维</a></div><div class="nav-item"><a href="/work/" class="nav-link">工作</a></div><div class="nav-item"><a href="/book/" class="nav-link">读书笔记</a></div><div class="nav-item"><a href="/more/" class="nav-link">更多</a></div><div class="nav-item"><a href="/about/" class="nav-link">关于</a></div><div class="nav-item"><a href="/pages/beb6c0bd8a66cea6/" class="nav-link">收藏</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="索引" class="dropdown-title"><a href="/archives/" class="link-title">索引</a> <span class="title" style="display:none;">索引</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/categories/" class="nav-link">分类</a></li><li class="dropdown-item"><!----> <a href="/tags/" class="nav-link">标签</a></li><li class="dropdown-item"><!----> <a href="/archives/" class="nav-link">归档</a></li></ul></div></div> <a href="https://github.com/zhangst94/zhangst94.github.io" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Linux</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>KVM</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Ansible</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Apache</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Nginx</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Tomcat</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Docker</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Docker-compose</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Containerd</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Dragonfly</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>K8S</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>MYSQL</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>MongoDB</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Redis</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Oracle</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Jenkins</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>ZooKeeper</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Kafka</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>mq</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Nightingale</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/pages/2e625f/" class="sidebar-link">Nightingale | 夜莺监控</a></li><li><a href="/pages/75a155/" class="sidebar-link">Nightingale-功能介绍</a></li><li><a href="/pages/9372a5/" class="sidebar-link">Nightingale-Categraf采集器</a></li><li><a href="/pages/a2335a/" class="sidebar-link">Nightingale-categraf-mtail日志收集插件</a></li><li><a href="/pages/8ca8ff/" class="sidebar-link">Nightifale-n9e-helm部署</a></li><li><a href="/pages/067177/" aria-current="page" class="active sidebar-link">K8S监控指标梳理</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header level2"><a href="/pages/067177/#kubernetes-master-组件指标" class="sidebar-link">Kubernetes Master 组件指标</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header level3"><a href="/pages/067177/#kube-apiserver-指标" class="sidebar-link">kube-apiserver 指标</a></li><li class="sidebar-sub-header level3"><a href="/pages/067177/#kube-controller-manager-指标" class="sidebar-link">kube-controller-manager 指标</a></li><li class="sidebar-sub-header level3"><a href="/pages/067177/#kube-scheduler指标" class="sidebar-link">kube-scheduler指标</a></li><li class="sidebar-sub-header level3"><a href="/pages/067177/#etcd指标" class="sidebar-link">etcd指标</a></li></ul></li><li class="sidebar-sub-header level2"><a href="/pages/067177/#kubernetes-node-组件指标" class="sidebar-link">Kubernetes Node 组件指标</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header level3"><a href="/pages/067177/#kubelet自身指标梳理" class="sidebar-link">kubelet自身指标梳理</a></li><li class="sidebar-sub-header level3"><a href="/pages/067177/#kube-proxy指标" class="sidebar-link">kube-proxy指标</a></li><li class="sidebar-sub-header level3"><a href="/pages/067177/#kube-state-metrics-指标梳理" class="sidebar-link">kube-state-metrics 指标梳理</a></li><li class="sidebar-sub-header level3"><a href="/pages/067177/#cadvisor-node上负载-指标梳理" class="sidebar-link">cadvisor(node上负载)指标梳理</a></li></ul></li></ul></li><li><a href="/pages/57d897/" class="sidebar-link">Nightingale-k8s组件监控（上）</a></li><li><a href="/pages/3a33fc/" class="sidebar-link">Nightingale-k8s组件监控（下）</a></li><li><a href="/pages/efc972/" class="sidebar-link">Nightingale-k8s组件监控实践</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Prometheus</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>VictoriaMetrics</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Zabbix</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Grafana</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>.loki</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Consul</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>OpenLDAP</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>混沌工程</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <div><main class="page"><div class="theme-vdoing-wrapper "><div class="articleInfo-wrap" data-v-06225672><div class="articleInfo" data-v-06225672><ul class="breadcrumbs" data-v-06225672><li data-v-06225672><a href="/" title="首页" class="iconfont icon-home router-link-active" data-v-06225672></a></li> <li data-v-06225672><a href="/yunwei/#运维" data-v-06225672>运维</a></li><li data-v-06225672><a href="/yunwei/#Nightingale" data-v-06225672>Nightingale</a></li></ul> <div class="info" data-v-06225672><div title="作者" class="author iconfont icon-touxiang" data-v-06225672><a href="https://github.com/zhangst94" target="_blank" title="作者" class="beLink" data-v-06225672>zhang</a></div> <div title="创建时间" class="date iconfont icon-riqi" data-v-06225672><a href="javascript:;" data-v-06225672>2023-05-20</a></div> <!----></div></div></div> <!----> <div class="content-wrapper"><div class="right-menu-wrapper"><div class="right-menu-margin"><div class="right-menu-title">目录</div> <div class="right-menu-content"></div></div></div> <h1><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAABH1JREFUSA3tVl1oHFUUPmdmd2ltklqbpJDiNnXFmgbFktho7YMPNiJSSZM0+CAYSkUELVhM6YuwIPpgoOKDqOBDC0XE2CQoNtQXBUFTTcCi+Wlh1V2TQExsUzcltd3M9Tt3ZjZzZ2fT+OJTL8yeM+eee757fmeJbq//KQL8X3DUSFOcfr7cRsRtxNQMWueeVzOkaITIGqQHNg5y8+jNW9ldM7A6nTpAjuolUikAwq7CE3WcM2RRDz+XGVgN3FptU/aUSlvq9Pa3iZ1+sgAqJyyAFqkipd9dqiwHF3P65YycLWc/6sqGrvoEoIp6DOFaX5h6+dnfjkWprwqsPk0dUGq5vySwDImC10KxFHgGL1SWoc92O3eVht09qdXNH11I2SsTsJYqMWzihqGMi+A+Garf3BAuuLI5oGlULyNfyB/HYNujwktOfRrMr5t77NmevqaUopx0grnKAyvVpmwUDB4x6FPXuGvYLTDwWsejwgtgkYKPqRJg8SV6xaiZ3ZTppGneS4yfH5/66fZSDHv+QZci/+h5c5UHtpy67JUqGppM0sh0Nc1dW6/N1W5Yoqat8/TU/VnadmdeW2PLLSyh0cvxBs3KbqTmwYPpxN4do/mzE8nEpvX/UMu2Wbp74zUAK5q6WkHns7V0eWkdPbPzd3rxkTGybadYySumVzhcaJFbs5UrEkQ/+CK8gF5dnh/6ciIZ73gwQ927L1IitoxKLXYP3SjYdOrHHfTZhRRlFyrorafPk20B3HPD1y2G3qKZME5Jcf3t/HUC13/8tSd++vqFveMUTwAUxSUFI1QekR1+bIze3D9MF2aq6cPvG72CgnldWCFqyRw3lwH8ZMerjTD9ElRO7Gv44wNpC90aASqGfVlz/Rx17srQ57/UU26hkhQqUB7dBR71WmzQhHUnblGmVOEw0jhbV1n9OlXUDCIRGaNV5Jp43N516fN7JmnTHdfp7Hgy0luO4aMhtkLL8Bi3bUWYvzh5Mn1dTxrL6QmGuRhGL/TiTTxRoEdTszSaq9GR0NGA3KdkOz3hqSV3MIDhQ5IVX/Ivx3umBti2es2h4eZby7x8br1rkf7Mo90AqC8aQ3sJeNzqFRu+vSANAQe3PL7l0HGOAdwDCeZYvNKeoZp1Qfs6Aipndh86HmFRi0LAnEO47wsqM6cdfjh3jBPUzhZy7nvlUfFsamED1VQt6aISHVymXZ/B2aCtIG8AI8xfobj2d3en1wWVhOeHELKmLQ1s211s88comkv4UCwWyF787mJdYXtNfhKAXVqnKTq8QZvGAGGOfaTo5pGZ/PwbUCr5+DPr/1J92JNHr9aOl/F3iI5+O1nfybsGxoimvZ3ViWSluDITw3P37mypheDIPY0tw7+O/5ApbkYw+zpfaUVu32Pi98+defdUhEpZkRFq0aqyNh9FuL9hpYbEm6iwi0z2REd09ZmyENEbuhjDWzKvZXTqKYaBIr3tt5kuPtQBZFvEUwHt60vfCNu41XsksH9Ij1BMMz1Y0OOunHNShFIP5868g5zeXmuLwL9T4b6Q2+KejgAAAABJRU5ErkJggg==">K8S监控指标梳理<!----></h1>  <div class="theme-vdoing-content content__default"><p>参考链接：</p> <p>https://mp.weixin.qq.com/s/KQjVbc7ArtfJ3PHM-BHdPw</p> <p>https://mp.weixin.qq.com/s/QzidC1zvPFY1FqUofWfbbg</p> <h2 id="kubernetes-master-组件指标"><a href="#kubernetes-master-组件指标" class="header-anchor">#</a> Kubernetes Master 组件指标</h2> <h3 id="kube-apiserver-指标"><a href="#kube-apiserver-指标" class="header-anchor">#</a> kube-apiserver 指标</h3> <p>kuber-apiserver暴露了148个指标，梳理后比较重要的指标如下。</p> <div class="language-toml line-numbers-mode"><pre class="language-toml"><code><span class="token comment"># HELP apiserver_request_duration_seconds [STABLE] Response latency distribution in seconds for each verb, dry run value, group, version, resource, subresource, scope and component.</span>
+<span class="token comment"># TYPE apiserver_request_duration_seconds histogram</span>
+apiserver响应的时间分布，按照url 和 verb 分类
+一般按照instance和verb+时间 汇聚
+
+<span class="token comment"># HELP apiserver_request_total [STABLE] Counter of apiserver requests broken out for each verb, dry run value, group, version, resource, scope, component, and HTTP response code.</span>
+<span class="token comment"># TYPE apiserver_request_total counter</span>
+apiserver的请求总数，按照verb、 version、 group、resource、scope、component、 http返回码分类统计
+
+<span class="token comment"># HELP apiserver_current_inflight_requests [STABLE] Maximal number of currently used inflight request limit of this apiserver per request kind in last second.</span>
+<span class="token comment"># TYPE apiserver_current_inflight_requests gauge</span>
+最大并发请求数<span class="token punctuation">,</span> 按mutating(非get list watch的请求) 和 readOnly (get list watch)分别限制
+超过max-requests-inflight(默认值<span class="token number">400</span>)  和 max-mutating-requests-inflight（默认<span class="token number">200</span>） 的请求会被限流
+apiserver变更时要注意观察，也是反馈集群容量的一个重要指标
+
+<span class="token comment"># HELP apiserver_response_sizes [STABLE] Response size distribution in bytes for each group, version, verb, resource, subresource, scope and component.</span>
+<span class="token comment"># TYPE apiserver_response_sizes histogram</span>
+apiserver 响应大小，单位byte<span class="token punctuation">,</span> 按照verb、 version、 group、resource、scope、component分类统计
+
+<span class="token comment"># HELP watch_cache_capacity [ALPHA] Total capacity of watch cache broken by resource type.</span>
+<span class="token comment"># TYPE watch_cache_capacity gauge</span>
+按照资源类型统计的watch缓存大小
+
+<span class="token comment"># HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.</span>
+<span class="token comment"># TYPE process_cpu_seconds_total counter</span>
+每秒钟用户态和系统态cpu消耗时间<span class="token punctuation">,</span> 计算apiserver进程的cpu的使用率
+
+<span class="token comment"># HELP process_resident_memory_bytes Resident memory size in bytes.</span>
+<span class="token comment"># TYPE process_resident_memory_bytes gauge</span>
+apiserver的内存使用量（单位:Byte)
+
+<span class="token comment"># HELP workqueue_adds_total [ALPHA] Total number of adds handled by workqueue</span>
+<span class="token comment"># TYPE workqueue_adds_total counter</span>
+apiserver中包含的controller的工作队列，已处理的任务总数
+
+<span class="token comment"># HELP workqueue_depth [ALPHA] Current depth of workqueue</span>
+<span class="token comment"># TYPE workqueue_depth gauge</span>
+apiserver中包含的controller的工作队列深度，表示当前队列中要处理的任务的数量，数值越小越好 
+例如APIServiceRegistrationController admission_quota_controller
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br></div></div><p>kube-apiserver对应的指标大盘在https://github.com/flashcatcloud/categraf/blob/main/k8s/apiserver-dash.json</p> <h3 id="kube-controller-manager-指标"><a href="#kube-controller-manager-指标" class="header-anchor">#</a> kube-controller-manager 指标</h3> <p>kube-controller-manager暴露了61个指标，梳理后比较重要的指标如下。</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code><span class="token comment"># HELP rest_client_request_duration_seconds [ALPHA] Request latency in seconds. Broken down by verb and URL.</span>
+<span class="token comment"># TYPE rest_client_request_duration_seconds histogram</span>
+请求apiserver的耗时分布，按照url+verb统计
+
+<span class="token comment"># HELP cronjob_controller_cronjob_job_creation_skew_duration_seconds [ALPHA] Time between when a cronjob is scheduled to be run, and when the corresponding job is created</span>
+<span class="token comment"># TYPE cronjob_controller_cronjob_job_creation_skew_duration_seconds histogram</span>
+cronjob 创建到运行的时间分布
+
+<span class="token comment"># HELP leader_election_master_status [ALPHA] Gauge of if the reporting system is master of the relevant lease, 0 indicates backup, 1 indicates master. 'name' is the string used to identify the lease. Please make sure to group by name.</span>
+<span class="token comment"># TYPE leader_election_master_status gauge</span>
+控制器的选举状态，0表示backup， <span class="token number">1</span>表示master 
+
+<span class="token comment"># HELP node_collector_zone_health [ALPHA] Gauge measuring percentage of healthy nodes per zone.</span>
+<span class="token comment"># TYPE node_collector_zone_health gauge</span>
+每个zone的健康node占比
+
+<span class="token comment"># HELP node_collector_zone_size [ALPHA] Gauge measuring number of registered Nodes per zones.</span>
+<span class="token comment"># TYPE node_collector_zone_size gauge</span>
+每个zone的node数
+
+<span class="token comment"># HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.</span>
+<span class="token comment"># TYPE process_cpu_seconds_total counter</span>
+cpu使用量（也可以理解为cpu使用率）
+
+<span class="token comment"># HELP process_open_fds Number of open file descriptors.</span>
+<span class="token comment"># TYPE process_open_fds gauge</span>
+控制器打开的fd数
+
+<span class="token comment"># HELP pv_collector_bound_pv_count [ALPHA] Gauge measuring number of persistent volume currently bound</span>
+<span class="token comment"># TYPE pv_collector_bound_pv_count gauge</span>
+当前绑定的pv数量
+
+<span class="token comment"># HELP pv_collector_unbound_pvc_count [ALPHA] Gauge measuring number of persistent volume claim currently unbound</span>
+<span class="token comment"># TYPE pv_collector_unbound_pvc_count gauge</span>
+当前没有绑定的pvc数量 
+
+
+<span class="token comment"># HELP pv_collector_bound_pvc_count [ALPHA] Gauge measuring number of persistent volume claim currently bound</span>
+<span class="token comment"># TYPE pv_collector_bound_pvc_count gauge</span>
+当前绑定的pvc数量
+
+<span class="token comment"># HELP pv_collector_total_pv_count [ALPHA] Gauge measuring total number of persistent volumes</span>
+<span class="token comment"># TYPE pv_collector_total_pv_count gauge</span>
+pv总数量
+
+
+<span class="token comment"># HELP workqueue_adds_total [ALPHA] Total number of adds handled by workqueue</span>
+<span class="token comment"># TYPE workqueue_adds_total counter</span>
+各个controller已接受的任务总数
+与apiserver的workqueue_adds_total指标类似
+
+<span class="token comment"># HELP workqueue_depth [ALPHA] Current depth of workqueue</span>
+<span class="token comment"># TYPE workqueue_depth gauge</span>
+各个controller队列深度，表示一个controller中的任务的数量
+与apiserver的workqueue_depth类似，这个是指各个controller中队列的深度，数值越小越好
+
+<span class="token comment"># HELP workqueue_queue_duration_seconds [ALPHA] How long in seconds an item stays in workqueue before being requested.</span>
+<span class="token comment"># TYPE workqueue_queue_duration_seconds histogram</span>
+任务在队列中的等待耗时,按照控制器分别统计
+
+<span class="token comment"># HELP workqueue_work_duration_seconds [ALPHA] How long in seconds processing an item from workqueue takes.</span>
+<span class="token comment"># TYPE workqueue_work_duration_seconds histogram</span>
+任务出队到被处理完成的时间，按照控制分别统计
+
+<span class="token comment"># HELP workqueue_retries_total [ALPHA] Total number of retries handled by workqueue</span>
+<span class="token comment"># TYPE workqueue_retries_total counter</span>
+任务进入队列重试的次数
+
+<span class="token comment"># HELP workqueue_longest_running_processor_seconds [ALPHA] How many seconds has the longest running processor for workqueue been running.</span>
+<span class="token comment"># TYPE workqueue_longest_running_processor_seconds gauge</span>
+正在处理的任务中，最长耗时任务的处理时间
+
+<span class="token comment"># HELP endpoint_slice_controller_syncs [ALPHA] Number of EndpointSlice syncs</span>
+<span class="token comment"># TYPE endpoint_slice_controller_syncs counter</span>
+endpoint_slice 同步的数量 （1.20以上）
+
+<span class="token comment"># HELP get_token_fail_count [ALPHA] Counter of failed Token() requests to the alternate token source</span>
+<span class="token comment"># TYPE get_token_fail_count counter</span>
+获取token失败的次数
+
+<span class="token comment"># HELP go_memstats_gc_cpu_fraction The fraction of this program's available CPU time used by the GC since the program started.</span>
+<span class="token comment"># TYPE go_memstats_gc_cpu_fraction gauge</span>
+controller gc的cpu使用率
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br></div></div><p>kube-controller-manager对应的大盘在https://github.com/flashcatcloud/categraf/blob/main/k8s/cm-dash.json</p> <h3 id="kube-scheduler指标"><a href="#kube-scheduler指标" class="header-anchor">#</a> kube-scheduler指标</h3> <p>kube-scheduler暴露了 53个指标 梳理后比较重要的指标如下。</p> <div class="language-toml line-numbers-mode"><pre class="language-toml"><code><span class="token comment"># HELP rest_client_request_duration_seconds [ALPHA] Request latency in seconds. Broken down by verb and URL.</span>
+<span class="token comment"># TYPE rest_client_request_duration_seconds histogram</span>
+请求apiserver的延迟分布
+
+<span class="token comment"># HELP rest_client_requests_total [ALPHA] Number of HTTP requests, partitioned by status code, method, and host.</span>
+<span class="token comment"># TYPE rest_client_requests_total counter</span>
+请求apiserver的总数 <span class="token punctuation">,</span>按照host code method 统计
+
+<span class="token comment"># HELP leader_election_master_status [ALPHA] Gauge of if the reporting system is master of the relevant lease, 0 indicates backup, 1 indicates master. 'name' is the string used to identify the lease. Please make sure to group by name.</span>
+<span class="token comment"># TYPE leader_election_master_status gauge</span>
+调度器的选举状态，<span class="token number">0</span>表示backup， <span class="token number">1</span>表示master
+
+<span class="token comment"># HELP scheduler_queue_incoming_pods_total [STABLE] Number of pods added to scheduling queues by event and queue type.</span>
+<span class="token comment"># TYPE scheduler_queue_incoming_pods_total counter</span>
+进入调度队列的pod数
+
+<span class="token comment"># HELP scheduler_preemption_attempts_total [STABLE] Total preemption attempts in the cluster till now</span>
+<span class="token comment"># TYPE scheduler_preemption_attempts_total counter</span>
+调度器驱逐容器的次数
+
+<span class="token comment"># HELP scheduler_scheduler_cache_size [ALPHA] Number of nodes, pods, and assumed (bound) pods in the scheduler cache.</span>
+<span class="token comment"># TYPE scheduler_scheduler_cache_size gauge</span>
+调度器cache中node pod和绑定pod的数目
+
+<span class="token comment"># HELP scheduler_pending_pods [STABLE] Number of pending pods, by the queue type. 'active' means number of pods in activeQ; 'backoff' means number of pods in backoffQ; 'unschedulable' means number of pods in unschedulableQ.</span>
+<span class="token comment"># TYPE scheduler_pending_pods gauge</span>
+调度pending的pod数量，按照queue type分别统计
+
+<span class="token comment"># HELP scheduler_plugin_execution_duration_seconds [ALPHA] Duration for running a plugin at a specific extension point.</span>
+<span class="token comment"># TYPE scheduler_plugin_execution_duration_seconds histogram</span>
+调度插件在每个扩展点的执行时间，按照extension_point+plugin+status 分别统计
+
+<span class="token comment"># HELP scheduler_e2e_scheduling_duration_seconds [ALPHA] (Deprecated since 1.23.0) E2e scheduling latency in seconds (scheduling algorithm + binding). This metric is replaced by scheduling_attempt_duration_seconds.</span>
+<span class="token comment"># TYPE scheduler_e2e_scheduling_duration_seconds histogram</span>
+调度延迟分布，<span class="token number">1.23</span><span class="token punctuation">.</span><span class="token number">0</span> 以后会被scheduling_attempt_duration_seconds替代
+
+<span class="token comment"># HELP scheduler_framework_extension_point_duration_seconds [STABLE] Latency for running all plugins of a specific extension point.</span>
+<span class="token comment"># TYPE scheduler_framework_extension_point_duration_seconds histogram</span>
+调度框架的扩展点延迟分布<span class="token punctuation">,</span>按extension_point(扩展点Bind Filter Permit PreBind/PostBind PreFilter/PostFilter Reseve)
++profile（调度器）+ status(调度成功) 统计
+
+<span class="token comment"># HELP scheduler_pod_scheduling_attempts [STABLE] Number of attempts to successfully schedule a pod.</span>
+<span class="token comment"># TYPE scheduler_pod_scheduling_attempts histogram</span>
+pod调度成功前，调度重试的次数分布
+
+<span class="token comment"># HELP scheduler_schedule_attempts_total [STABLE] Number of attempts to schedule pods, by the result. 'unschedulable' means a pod could not be scheduled, while 'error' means an internal scheduler problem.</span>
+<span class="token comment"># TYPE scheduler_schedule_attempts_total counter</span>
+按照调度结果统计的调度重试次数。 <span class="token string">&quot;unschedulable&quot;</span> 表示无法调度，<span class="token string">&quot;error&quot;</span>表示调度器内部错误
+
+<span class="token comment"># HELP scheduler_scheduler_goroutines [ALPHA] Number of running goroutines split by the work they do such as binding.</span>
+<span class="token comment"># TYPE scheduler_scheduler_goroutines gauge</span>
+按照功能(binding filter之类)统计的goroutine数量
+
+<span class="token comment"># HELP scheduler_scheduling_algorithm_duration_seconds [ALPHA] Scheduling algorithm latency in seconds</span>
+<span class="token comment"># TYPE scheduler_scheduling_algorithm_duration_seconds histogram</span>
+调度算法的耗时分布
+
+<span class="token comment"># HELP scheduler_scheduling_attempt_duration_seconds [STABLE] Scheduling attempt latency in seconds (scheduling algorithm + binding)</span>
+<span class="token comment"># TYPE scheduler_scheduling_attempt_duration_seconds histogram</span>
+调度算法+binding的耗时分布
+
+<span class="token comment"># HELP scheduler_scheduler_goroutines [ALPHA] Number of running goroutines split by the work they do such as binding.</span>
+<span class="token comment"># TYPE scheduler_scheduler_goroutines gauge</span>
+调度器的goroutines数目
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br></div></div><p>对应的大盘在https://github.com/flashcatcloud/categraf/blob/main/k8s/scheduler-dash.json</p> <h3 id="etcd指标"><a href="#etcd指标" class="header-anchor">#</a> etcd指标</h3> <p>etcd暴露了122个指标，需要关注的指标有</p> <div class="language-toml line-numbers-mode"><pre class="language-toml"><code><span class="token comment"># HELP etcd_server_is_leader Whether or not this member is a leader. 1 if is, 0 otherwise.</span>
+<span class="token comment"># TYPE etcd_server_is_leader gauge</span>
+etcd leader 表示 ，<span class="token number">1</span> leader <span class="token number">0</span> learner
+
+<span class="token comment"># HELP etcd_server_health_success The total number of successful health checks</span>
+<span class="token comment"># TYPE etcd_server_health_success counter</span>
+etcd server 健康检查成功次数
+
+<span class="token comment"># HELP etcd_server_health_failures The total number of failed health checks</span>
+<span class="token comment"># TYPE etcd_server_health_failures counter</span>
+etcd server 健康检查失败次数
+
+<span class="token comment"># HELP etcd_disk_defrag_inflight Whether or not defrag is active on the member. 1 means active, 0 means not.</span>
+<span class="token comment"># TYPE etcd_disk_defrag_inflight gauge</span>
+是否启动数据压缩，<span class="token number">1</span>表示压缩，<span class="token number">0</span>表示没有启动压缩
+
+<span class="token comment"># HELP etcd_server_snapshot_apply_in_progress_total 1 if the server is applying the incoming snapshot. 0 if none.</span>
+<span class="token comment"># TYPE etcd_server_snapshot_apply_in_progress_total gauge</span>
+是否再快照中，<span class="token number">1</span> 快照中，<span class="token number">0</span> 没有
+
+<span class="token comment"># HELP etcd_server_leader_changes_seen_total The number of leader changes seen.</span>
+<span class="token comment"># TYPE etcd_server_leader_changes_seen_total counter</span>
+
+<span class="token comment"># HELP grpc_server_handled_total Total number of RPCs completed on the server, regardless of success or failure.</span>
+<span class="token comment"># TYPE grpc_server_handled_total counter</span>
+集群leader切换的次数
+
+<span class="token comment"># HELP etcd_disk_wal_fsync_duration_seconds The latency distributions of fsync called by WAL.</span>
+<span class="token comment"># TYPE etcd_disk_wal_fsync_duration_seconds histogram</span>
+etcd wal同步耗时
+
+<span class="token comment"># HELP etcd_server_proposals_failed_total The total number of failed proposals seen.</span>
+<span class="token comment"># TYPE etcd_server_proposals_failed_total counter</span>
+etcd proposal（提议）失败总次数(proposal就是完成raft协议的一次请求）
+
+<span class="token comment"># HELP etcd_server_proposals_pending The current number of pending proposals to commit.</span>
+<span class="token comment"># TYPE etcd_server_proposals_pending gauge</span>
+etcd proposal（提议）pending总次数（proposal就是完成raft协议的一次请求）
+
+<span class="token comment"># HELP etcd_server_read_indexes_failed_total The total number of failed read indexes seen.</span>
+<span class="token comment"># TYPE etcd_server_read_indexes_failed_total counter</span>
+读取索引失败的次数统计(v3索引为所有key都建了索引，索引是为了加快range操作)
+
+<span class="token comment"># HELP etcd_server_slow_read_indexes_total The total number of pending read indexes not in sync with leader's or timed out read index requests.</span>
+<span class="token comment"># TYPE etcd_server_slow_read_indexes_total counter</span>
+读取到过期索引或者读取超时的次数
+
+<span class="token comment"># HELP etcd_server_quota_backend_bytes Current backend storage quota size in bytes.</span>
+<span class="token comment"># TYPE etcd_server_quota_backend_bytes gauge</span>
+当前后端的存储quota（db大小的上限）
+通过参数quota-backend-bytes调整大小，默认2G，官方建议不超过8G
+
+<span class="token comment"># HELP etcd_mvcc_db_total_size_in_bytes Total size of the underlying database physically allocated in bytes.</span>
+<span class="token comment"># TYPE etcd_mvcc_db_total_size_in_bytes gauge</span>
+etcd 分配的db大小（使用量大小+空闲大小）
+
+<span class="token comment"># HELP etcd_mvcc_db_total_size_in_use_in_bytes Total size of the underlying database logically in use in bytes.</span>
+<span class="token comment"># TYPE etcd_mvcc_db_total_size_in_use_in_bytes gauge</span>
+etcd db的使用量大小
+
+<span class="token comment"># HELP etcd_mvcc_range_total Total number of ranges seen by this member.</span>
+<span class="token comment"># TYPE etcd_mvcc_range_total counter</span>
+etcd执行range的数量
+
+<span class="token comment"># HELP etcd_mvcc_put_total Total number of puts seen by this member.</span>
+<span class="token comment"># TYPE etcd_mvcc_put_total counter</span>
+etcd执行put的数量
+
+<span class="token comment"># HELP etcd_mvcc_txn_total Total number of txns seen by this member.</span>
+<span class="token comment"># TYPE etcd_mvcc_txn_total counter</span>
+etcd实例执行事务的数量
+
+<span class="token comment"># HELP etcd_mvcc_delete_total Total number of deletes seen by this member.</span>
+<span class="token comment"># TYPE etcd_mvcc_delete_total counter</span>
+etcd实例执行delete操作的数量
+
+<span class="token comment"># HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.</span>
+<span class="token comment"># TYPE process_cpu_seconds_total counter</span>
+etcd cpu使用量
+<span class="token comment"># HELP process_resident_memory_bytes Resident memory size in bytes.</span>
+<span class="token comment"># TYPE process_resident_memory_bytes gauge</span>
+etcd 内存使用量
+
+<span class="token comment"># HELP process_open_fds Number of open file descriptors.</span>
+<span class="token comment"># TYPE process_open_fds gauge</span>
+etcd 打开的fd数目
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br><span class="line-number">84</span><br><span class="line-number">85</span><br><span class="line-number">86</span><br></div></div><h2 id="kubernetes-node-组件指标"><a href="#kubernetes-node-组件指标" class="header-anchor">#</a> Kubernetes Node 组件指标</h2> <h3 id="kubelet自身指标梳理"><a href="#kubelet自身指标梳理" class="header-anchor">#</a> kubelet自身指标梳理</h3> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code><span class="token comment"># HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.</span>
+<span class="token comment"># TYPE go_gc_duration_seconds summary</span>
+gc的时间统计（summary指标）
+
+<span class="token comment"># HELP go_goroutines Number of goroutines that currently exist.</span>
+<span class="token comment"># TYPE go_goroutines gauge</span>
+goroutine 数量
+
+<span class="token comment"># HELP go_threads Number of OS threads created.</span>
+<span class="token comment"># TYPE go_threads gauge</span>
+os的线程数量
+
+<span class="token comment"># HELP kubelet_cgroup_manager_duration_seconds [ALPHA] Duration in seconds for cgroup manager operations. Broken down by method.</span>
+<span class="token comment"># TYPE kubelet_cgroup_manager_duration_seconds histogram</span>
+操作cgroup的时长分布，按照操作类型统计
+
+<span class="token comment"># HELP kubelet_containers_per_pod_count [ALPHA] The number of containers per pod.</span>
+<span class="token comment"># TYPE kubelet_containers_per_pod_count histogram</span>
+pod中container数量的统计<span class="token punctuation">(</span>spec.containers的数量<span class="token punctuation">)</span>
+
+<span class="token comment"># HELP kubelet_docker_operations_duration_seconds [ALPHA] Latency in seconds of Docker operations. Broken down by operation type.</span>
+<span class="token comment"># TYPE kubelet_docker_operations_duration_seconds histogram</span>
+操作docker的时长分布，按照操作类型统计
+
+<span class="token comment"># HELP kubelet_docker_operations_errors_total [ALPHA] Cumulative number of Docker operation errors by operation type.</span>
+<span class="token comment"># TYPE kubelet_docker_operations_errors_total counter</span>
+操作docker的错误累计次数，按照操作类型统计
+
+<span class="token comment"># HELP kubelet_docker_operations_timeout_total [ALPHA] Cumulative number of Docker operation timeout by operation type.</span>
+<span class="token comment"># TYPE kubelet_docker_operations_timeout_total counter</span>
+操作docker的超时统计，按照操作类型统计
+
+<span class="token comment"># HELP kubelet_docker_operations_total [ALPHA] Cumulative number of Docker operations by operation type.</span>
+<span class="token comment"># TYPE kubelet_docker_operations_total counter</span>
+操作docker的累计次数，按照操作类型统计
+
+<span class="token comment"># HELP kubelet_eviction_stats_age_seconds [ALPHA] Time between when stats are collected, and when pod is evicted based on those stats by eviction signal</span>
+<span class="token comment"># TYPE kubelet_eviction_stats_age_seconds histogram</span>
+驱逐操作的时间分布，按照驱逐信号<span class="token punctuation">(</span>原因<span class="token punctuation">)</span>分类统计
+
+<span class="token comment"># HELP kubelet_evictions [ALPHA] Cumulative number of pod evictions by eviction signal</span>
+<span class="token comment"># TYPE kubelet_evictions counter</span>
+驱逐次数统计，按照驱逐信号（原因）统计
+
+<span class="token comment"># HELP kubelet_http_inflight_requests [ALPHA] Number of the inflight http requests</span>
+<span class="token comment"># TYPE kubelet_http_inflight_requests gauge</span>
+请求kubelet的inflight请求数,按照method path server_type统计
+注意与每秒的request数区别开
+
+<span class="token comment"># HELP kubelet_http_requests_duration_seconds [ALPHA] Duration in seconds to serve http requests</span>
+<span class="token comment"># TYPE kubelet_http_requests_duration_seconds histogram</span>
+请求kubelet的请求时间统计,按照method path server_type统计
+
+<span class="token comment"># HELP kubelet_http_requests_total [ALPHA] Number of the http requests received since the server started</span>
+<span class="token comment"># TYPE kubelet_http_requests_total counter</span>
+请求kubelet的请求数统计,按照method path server_type统计
+
+<span class="token comment"># HELP kubelet_managed_ephemeral_containers [ALPHA] Current number of ephemeral containers in pods managed by this kubelet. Ephemeral containers will be ignored if disabled by the EphemeralContainers feature gate, and this number will be 0.</span>
+<span class="token comment"># TYPE kubelet_managed_ephemeral_containers gauge</span>
+当前kubelet管理的临时容器数量
+
+<span class="token comment"># HELP kubelet_network_plugin_operations_duration_seconds [ALPHA] Latency in seconds of network plugin operations. Broken down by operation type.</span>
+<span class="token comment"># TYPE kubelet_network_plugin_operations_duration_seconds histogram</span>
+网络插件的操作耗时分布 ，按照操作类型<span class="token punctuation">(</span>operation_type<span class="token punctuation">)</span>统计
+如果 --feature-gates<span class="token operator">=</span>EphemeralContainers<span class="token operator">=</span>false，否则一直为0 
+
+<span class="token comment"># HELP kubelet_network_plugin_operations_errors_total [ALPHA] Cumulative number of network plugin operation errors by operation type.</span>
+<span class="token comment"># TYPE kubelet_network_plugin_operations_errors_total counter</span>
+网络插件累计操作错误数统计，按照操作类型<span class="token punctuation">(</span>operation_type<span class="token punctuation">)</span>统计
+
+<span class="token comment"># HELP kubelet_network_plugin_operations_total [ALPHA] Cumulative number of network plugin operations by operation type.</span>
+<span class="token comment"># TYPE kubelet_network_plugin_operations_total counter</span>
+网络插件累计操作数统计，按照操作类型<span class="token punctuation">(</span>operation_type<span class="token punctuation">)</span>统计
+
+<span class="token comment"># HELP kubelet_node_name [ALPHA] The node's name. The count is always 1.</span>
+<span class="token comment"># TYPE kubelet_node_name gauge</span>
+<span class="token function">node</span> name
+
+<span class="token comment"># HELP kubelet_pleg_discard_events [ALPHA] The number of discard events in PLEG.</span>
+<span class="token comment"># TYPE kubelet_pleg_discard_events counter</span>
+PLEG<span class="token punctuation">(</span>pod lifecycle event generator<span class="token punctuation">)</span> 丢弃的event数统计
+
+<span class="token comment"># HELP kubelet_pleg_last_seen_seconds [ALPHA] Timestamp in seconds when PLEG was last seen active.</span>
+<span class="token comment"># TYPE kubelet_pleg_last_seen_seconds gauge</span>
+PLEG上次活跃的时间戳
+
+<span class="token comment"># HELP kubelet_pleg_relist_duration_seconds [ALPHA] Duration in seconds for relisting pods in PLEG.</span>
+<span class="token comment"># TYPE kubelet_pleg_relist_duration_seconds histogram</span>
+PLEG relist pod时间分布 
+
+<span class="token comment"># HELP kubelet_pleg_relist_interval_seconds [ALPHA] Interval in seconds between relisting in PLEG.</span>
+<span class="token comment"># TYPE kubelet_pleg_relist_interval_seconds histogram</span>
+PLEG relist 间隔时间分布
+
+<span class="token comment"># HELP kubelet_pod_start_duration_seconds [ALPHA] Duration in seconds for a single pod to go from pending to running.</span>
+<span class="token comment"># TYPE kubelet_pod_start_duration_seconds histogram</span>
+pod启动时间<span class="token punctuation">(</span>从pending到running<span class="token punctuation">)</span>分布
+kubelet watch到pod时到pod中contianer都running后
+（watch各种source channel的pod变更）
+
+<span class="token comment"># HELP kubelet_pod_worker_duration_seconds [ALPHA] Duration in seconds to sync a single pod. Broken down by operation type: create, update, or sync</span>
+<span class="token comment"># TYPE kubelet_pod_worker_duration_seconds histogram</span>
+pod状态变化的时间分布， 按照操作类型（create update sync）统计
+worker就是kubelet中处理一个pod的逻辑工作单位
+
+<span class="token comment"># HELP kubelet_pod_worker_start_duration_seconds [ALPHA] Duration in seconds from seeing a pod to starting a worker.</span>
+<span class="token comment"># TYPE kubelet_pod_worker_start_duration_seconds histogram</span>
+kubelet watch到pod到worker启动的时间分布
+
+<span class="token comment"># HELP kubelet_run_podsandbox_duration_seconds [ALPHA] Duration in seconds of the run_podsandbox operations. Broken down by RuntimeClass.Handler.</span>
+<span class="token comment"># TYPE kubelet_run_podsandbox_duration_seconds histogram</span>
+启动sandbox的时间分布
+
+<span class="token comment"># HELP kubelet_run_podsandbox_errors_total [ALPHA] Cumulative number of the run_podsandbox operation errors by RuntimeClass.Handler.</span>
+<span class="token comment"># TYPE kubelet_run_podsandbox_errors_total counter</span>
+启动sanbox出现error的总数 
+
+<span class="token comment"># HELP kubelet_running_containers [ALPHA] Number of containers currently running</span>
+<span class="token comment"># TYPE kubelet_running_containers gauge</span>
+当前containers运行状态的统计
+按照container状态统计，created running exited
+
+<span class="token comment"># HELP kubelet_running_pods [ALPHA] Number of pods that have a running pod sandbox</span>
+<span class="token comment"># TYPE kubelet_running_pods gauge</span>
+当前处于running状态pod数量
+
+<span class="token comment"># HELP kubelet_runtime_operations_duration_seconds [ALPHA] Duration in seconds of runtime operations. Broken down by operation type.</span>
+<span class="token comment"># TYPE kubelet_runtime_operations_duration_seconds histogram</span>
+容器运行时的操作耗时
+<span class="token punctuation">(</span>container在create list <span class="token builtin class-name">exec</span> remove stop等的耗时<span class="token punctuation">)</span>
+
+<span class="token comment"># HELP kubelet_runtime_operations_errors_total [ALPHA] Cumulative number of runtime operation errors by operation type.</span>
+<span class="token comment"># TYPE kubelet_runtime_operations_errors_total counter</span>
+容器运行时的操作错误数统计<span class="token punctuation">(</span>按操作类型统计<span class="token punctuation">)</span>
+
+<span class="token comment"># HELP kubelet_runtime_operations_total [ALPHA] Cumulative number of runtime operations by operation type.</span>
+<span class="token comment"># TYPE kubelet_runtime_operations_total counter</span>
+容器运行时的操作总数统计<span class="token punctuation">(</span>按操作类型统计<span class="token punctuation">)</span>
+
+<span class="token comment"># HELP kubelet_started_containers_errors_total [ALPHA] Cumulative number of errors when starting containers</span>
+<span class="token comment"># TYPE kubelet_started_containers_errors_total counter</span>
+kubelet启动容器错误总数统计<span class="token punctuation">(</span>按code和container_type统计<span class="token punctuation">)</span>
+code包括ErrImagePull ErrImageInspect ErrImagePull ErrRegistryUnavailable ErrInvalidImageName等
+container_type一般为<span class="token string">&quot;container&quot;</span> <span class="token string">&quot;podsandbox&quot;</span>
+
+<span class="token comment"># HELP kubelet_started_containers_total [ALPHA] Cumulative number of containers started</span>
+<span class="token comment"># TYPE kubelet_started_containers_total counter</span>
+kubelet启动容器总数
+
+<span class="token comment"># HELP kubelet_started_pods_errors_total [ALPHA] Cumulative number of errors when starting pods</span>
+<span class="token comment"># TYPE kubelet_started_pods_errors_total counter</span>
+kubelet启动pod遇到的错误总数<span class="token punctuation">(</span>只有创建sandbox遇到错误才会统计）
+
+<span class="token comment"># HELP kubelet_started_pods_total [ALPHA] Cumulative number of pods started</span>
+<span class="token comment"># TYPE kubelet_started_pods_total counter</span>
+kubelet启动的pod总数 
+
+<span class="token comment"># HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.</span>
+<span class="token comment"># TYPE process_cpu_seconds_total counter</span>
+统计cpu使用率
+
+<span class="token comment"># HELP process_max_fds Maximum number of open file descriptors.</span>
+<span class="token comment"># TYPE process_max_fds gauge</span>
+允许进程打开的最大fd数
+
+<span class="token comment"># HELP process_open_fds Number of open file descriptors.</span>
+<span class="token comment"># TYPE process_open_fds gauge</span>
+当前打开的fd数量
+
+<span class="token comment"># HELP process_resident_memory_bytes Resident memory size in bytes.</span>
+<span class="token comment"># TYPE process_resident_memory_bytes gauge</span>
+进程驻留内存大小
+
+<span class="token comment"># HELP process_start_time_seconds Start time of the process since unix epoch in seconds.</span>
+<span class="token comment"># TYPE process_start_time_seconds gauge</span>
+进程启动时间
+
+<span class="token comment"># HELP rest_client_request_duration_seconds [ALPHA] Request latency in seconds. Broken down by verb and URL.</span>
+<span class="token comment"># TYPE rest_client_request_duration_seconds histogram</span>
+请求apiserver的耗时统计<span class="token punctuation">(</span>按照url和请求类型统计verb<span class="token punctuation">)</span>
+
+<span class="token comment"># HELP rest_client_requests_total [ALPHA] Number of HTTP requests, partitioned by status code, method, and host.</span>
+<span class="token comment"># TYPE rest_client_requests_total counter</span>
+请求apiserver的总次数<span class="token punctuation">(</span>按照返回码code和请求类型method统计<span class="token punctuation">)</span>
+
+<span class="token comment"># HELP storage_operation_duration_seconds [ALPHA] Storage operation duration</span>
+<span class="token comment"># TYPE storage_operation_duration_seconds histogram</span>
+存储操作耗时<span class="token punctuation">(</span>按照存储plugin<span class="token punctuation">(</span>configmap emptydir hostpath 等 <span class="token punctuation">)</span>和operation_name分类统计<span class="token punctuation">)</span>
+<span class="token comment"># HELP volume_manager_total_volumes [ALPHA] Number of volumes in Volume Manager</span>
+<span class="token comment"># TYPE volume_manager_total_volumes gauge</span>
+本机挂载的volume数量统计<span class="token punctuation">(</span>按照plugin_name和state统计
+plugin_name包括<span class="token string">&quot;host-path&quot;</span> <span class="token string">&quot;empty-dir&quot;</span> <span class="token string">&quot;configmap&quot;</span> <span class="token string">&quot;projected&quot;</span><span class="token punctuation">)</span>
+state<span class="token punctuation">(</span>desired_state_of_world期状态/actual_state_of_world实际状态）
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br><span class="line-number">84</span><br><span class="line-number">85</span><br><span class="line-number">86</span><br><span class="line-number">87</span><br><span class="line-number">88</span><br><span class="line-number">89</span><br><span class="line-number">90</span><br><span class="line-number">91</span><br><span class="line-number">92</span><br><span class="line-number">93</span><br><span class="line-number">94</span><br><span class="line-number">95</span><br><span class="line-number">96</span><br><span class="line-number">97</span><br><span class="line-number">98</span><br><span class="line-number">99</span><br><span class="line-number">100</span><br><span class="line-number">101</span><br><span class="line-number">102</span><br><span class="line-number">103</span><br><span class="line-number">104</span><br><span class="line-number">105</span><br><span class="line-number">106</span><br><span class="line-number">107</span><br><span class="line-number">108</span><br><span class="line-number">109</span><br><span class="line-number">110</span><br><span class="line-number">111</span><br><span class="line-number">112</span><br><span class="line-number">113</span><br><span class="line-number">114</span><br><span class="line-number">115</span><br><span class="line-number">116</span><br><span class="line-number">117</span><br><span class="line-number">118</span><br><span class="line-number">119</span><br><span class="line-number">120</span><br><span class="line-number">121</span><br><span class="line-number">122</span><br><span class="line-number">123</span><br><span class="line-number">124</span><br><span class="line-number">125</span><br><span class="line-number">126</span><br><span class="line-number">127</span><br><span class="line-number">128</span><br><span class="line-number">129</span><br><span class="line-number">130</span><br><span class="line-number">131</span><br><span class="line-number">132</span><br><span class="line-number">133</span><br><span class="line-number">134</span><br><span class="line-number">135</span><br><span class="line-number">136</span><br><span class="line-number">137</span><br><span class="line-number">138</span><br><span class="line-number">139</span><br><span class="line-number">140</span><br><span class="line-number">141</span><br><span class="line-number">142</span><br><span class="line-number">143</span><br><span class="line-number">144</span><br><span class="line-number">145</span><br><span class="line-number">146</span><br><span class="line-number">147</span><br><span class="line-number">148</span><br><span class="line-number">149</span><br><span class="line-number">150</span><br><span class="line-number">151</span><br><span class="line-number">152</span><br><span class="line-number">153</span><br><span class="line-number">154</span><br><span class="line-number">155</span><br><span class="line-number">156</span><br><span class="line-number">157</span><br><span class="line-number">158</span><br><span class="line-number">159</span><br><span class="line-number">160</span><br><span class="line-number">161</span><br><span class="line-number">162</span><br><span class="line-number">163</span><br><span class="line-number">164</span><br><span class="line-number">165</span><br><span class="line-number">166</span><br><span class="line-number">167</span><br><span class="line-number">168</span><br><span class="line-number">169</span><br><span class="line-number">170</span><br><span class="line-number">171</span><br><span class="line-number">172</span><br><span class="line-number">173</span><br><span class="line-number">174</span><br><span class="line-number">175</span><br><span class="line-number">176</span><br><span class="line-number">177</span><br><span class="line-number">178</span><br><span class="line-number">179</span><br><span class="line-number">180</span><br><span class="line-number">181</span><br><span class="line-number">182</span><br><span class="line-number">183</span><br><span class="line-number">184</span><br><span class="line-number">185</span><br><span class="line-number">186</span><br><span class="line-number">187</span><br><span class="line-number">188</span><br><span class="line-number">189</span><br><span class="line-number">190</span><br><span class="line-number">191</span><br><span class="line-number">192</span><br><span class="line-number">193</span><br></div></div><h3 id="kube-proxy指标"><a href="#kube-proxy指标" class="header-anchor">#</a> kube-proxy指标</h3> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code><span class="token comment"># HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.</span>
+<span class="token comment"># TYPE go_gc_duration_seconds summary</span>
+gc时间
+
+<span class="token comment"># HELP go_goroutines Number of goroutines that currently exist.</span>
+<span class="token comment"># TYPE go_goroutines gauge</span>
+goroutine数量
+
+<span class="token comment"># HELP go_threads Number of OS threads created.</span>
+<span class="token comment"># TYPE go_threads gauge</span>
+系统线程数量
+
+<span class="token comment"># HELP kubeproxy_network_programming_duration_seconds [ALPHA] In Cluster Network Programming Latency in seconds</span>
+<span class="token comment"># TYPE kubeproxy_network_programming_duration_seconds histogram</span>
+service或者pod发生变化到kube-proxy规则同步完成时间
+指标含义较复杂，参照https://github.com/kubernetes/community/blob/master/sig-scalability/slos/network_programming_latency.md
+
+<span class="token comment"># HELP kubeproxy_sync_proxy_rules_duration_seconds [ALPHA] SyncProxyRules latency in seconds</span>
+<span class="token comment"># TYPE kubeproxy_sync_proxy_rules_duration_seconds histogram</span>
+规则的同步耗时
+
+<span class="token comment"># HELP kubeproxy_sync_proxy_rules_endpoint_changes_pending [ALPHA] Pending proxy rules Endpoint changes</span>
+<span class="token comment"># TYPE kubeproxy_sync_proxy_rules_endpoint_changes_pending gauge</span>
+ep发生变化后规则同步pending的次数
+
+<span class="token comment"># HELP kubeproxy_sync_proxy_rules_endpoint_changes_total [ALPHA] Cumulative proxy rules Endpoint changes</span>
+<span class="token comment"># TYPE kubeproxy_sync_proxy_rules_endpoint_changes_total counter</span>
+ep变化发生规则同步的总次数
+
+<span class="token comment"># HELP kubeproxy_sync_proxy_rules_iptables_restore_failures_total [ALPHA] Cumulative proxy iptables restore failures</span>
+<span class="token comment"># TYPE kubeproxy_sync_proxy_rules_iptables_restore_failures_total counter</span>
+本机上iptable restore失败的总数数
+
+<span class="token comment"># HELP kubeproxy_sync_proxy_rules_last_queued_timestamp_seconds [ALPHA] The last time a sync of proxy rules was queued</span>
+<span class="token comment"># TYPE kubeproxy_sync_proxy_rules_last_queued_timestamp_seconds gauge</span>
+最近一次规则同步的请求时间戳
+如果比下一个指标kubeproxy_sync_proxy_rules_last_timestamp_seconds 大很多，
+那说明同步hung住了
+
+<span class="token comment"># HELP kubeproxy_sync_proxy_rules_last_timestamp_seconds [ALPHA] The last time proxy rules were successfully synced</span>
+<span class="token comment"># TYPE kubeproxy_sync_proxy_rules_last_timestamp_seconds gauge</span>
+最近一次规则同步的完成时间戳
+
+<span class="token comment"># HELP kubeproxy_sync_proxy_rules_service_changes_pending [ALPHA] Pending proxy rules Service changes</span>
+<span class="token comment"># TYPE kubeproxy_sync_proxy_rules_service_changes_pending gauge</span>
+service变化引起的规则同步pending数量
+
+<span class="token comment"># HELP kubeproxy_sync_proxy_rules_service_changes_total [ALPHA] Cumulative proxy rules Service changes</span>
+<span class="token comment"># TYPE kubeproxy_sync_proxy_rules_service_changes_total counter</span>
+service变化引起的规则同步总数
+
+<span class="token comment"># HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.</span>
+<span class="token comment"># TYPE process_cpu_seconds_total counter</span>
+利用这个指标统计cpu使用率
+
+<span class="token comment"># HELP process_max_fds Maximum number of open file descriptors.</span>
+<span class="token comment"># TYPE process_max_fds gauge</span>
+进程可以打开的最大fd数
+
+<span class="token comment"># HELP process_open_fds Number of open file descriptors.</span>
+<span class="token comment"># TYPE process_open_fds gauge</span>
+进程当前打开的fd数
+<span class="token comment"># HELP process_resident_memory_bytes Resident memory size in bytes.</span>
+<span class="token comment"># TYPE process_resident_memory_bytes gauge</span>
+统计内存使用大小
+
+<span class="token comment"># HELP process_start_time_seconds Start time of the process since unix epoch in seconds.</span>
+<span class="token comment"># TYPE process_start_time_seconds gauge</span>
+进程启动时间戳
+
+<span class="token comment"># HELP rest_client_request_duration_seconds [ALPHA] Request latency in seconds. Broken down by verb and URL.</span>
+<span class="token comment"># TYPE rest_client_request_duration_seconds histogram</span>
+请求apiserver的耗时 <span class="token punctuation">(</span>按照url和verb统计）
+
+<span class="token comment"># HELP rest_client_requests_total [ALPHA] Number of HTTP requests, partitioned by status code, method, and host.</span>
+<span class="token comment"># TYPE rest_client_requests_total counter</span>
+请求apiserver的总数<span class="token punctuation">(</span>按照code method host统计<span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br></div></div><h3 id="kube-state-metrics-指标梳理"><a href="#kube-state-metrics-指标梳理" class="header-anchor">#</a> kube-state-metrics 指标梳理</h3> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code><span class="token comment"># HELP kube_configmap_info Information about configmap.</span>
+<span class="token comment"># TYPE kube_configmap_info gauge</span>
+统计configmap数量<span class="token punctuation">(</span>label包含configmap的ns+name<span class="token punctuation">)</span>
+
+<span class="token comment"># HELP kube_configmap_created Unix creation timestamp</span>
+<span class="token comment"># TYPE kube_configmap_created gauge</span>
+统计configmap创建时间戳
+
+<span class="token comment"># HELP kube_configmap_metadata_resource_version Resource version representing a specific version of the configmap.</span>
+<span class="token comment"># TYPE kube_configmap_metadata_resource_version gauge</span>
+configmap label: ns+name value: resource version
+
+<span class="token comment"># HELP kube_daemonset_created Unix creation timestamp</span>
+<span class="token comment"># TYPE kube_daemonset_created gauge</span>
+统计deamonset 创建时间戳
+
+<span class="token comment"># HELP kube_daemonset_status_current_number_scheduled The number of nodes running at least one daemon pod and are supposed to.</span>
+<span class="token comment"># TYPE kube_daemonset_status_current_number_scheduled gauge</span>
+daemonset 成功调度的个数 
+value应该与下面指标kube_daemonset_status_desired_number_scheduled相等
+
+<span class="token comment"># HELP kube_daemonset_status_desired_number_scheduled The number of nodes that should be running the daemon pod.</span>
+<span class="token comment"># TYPE kube_daemonset_status_desired_number_scheduled gauge</span>
+daemonset期望调度的个数
+value理论上应该等于可调度的node数
+
+<span class="token comment"># HELP kube_daemonset_status_number_available The number of nodes that should be running the daemon pod and have one or more of the daemon pod running and available</span>
+<span class="token comment"># TYPE kube_daemonset_status_number_available gauge</span>
+可以运行deamonset pod的node数
+
+<span class="token comment"># HELP kube_daemonset_status_number_misscheduled The number of nodes running a daemon pod but are not supposed to.</span>
+<span class="token comment"># TYPE kube_daemonset_status_number_misscheduled gauge</span>
+daemonset 没有被调度的的数量
+
+<span class="token comment"># HELP kube_daemonset_status_number_ready The number of nodes that should be running the daemon pod and have one or more of the daemon pod running and ready.</span>
+<span class="token comment"># TYPE kube_daemonset_status_number_ready gauge</span>
+daemonset处于ready状态的pod数量
+
+<span class="token comment"># HELP kube_daemonset_status_number_unavailable The number of nodes that should be running the daemon pod and have none of the daemon pod running and available</span>
+<span class="token comment"># TYPE kube_daemonset_status_number_unavailable gauge</span>
+daemonset处于不可用状态的pod数量
+
+<span class="token comment"># HELP kube_daemonset_status_observed_generation The most recent generation observed by the daemon set controller.</span>
+<span class="token comment"># TYPE kube_daemonset_status_observed_generation gauge</span>
+daemonset controller看到的最新一代generation
+统计daemonset创建后更新过多少次
+
+<span class="token comment"># HELP kube_daemonset_status_updated_number_scheduled The total number of nodes that are running updated daemon pod</span>
+<span class="token comment"># TYPE kube_daemonset_status_updated_number_scheduled gauge</span>
+daemonset最近一次更新成功的数量
+
+<span class="token comment"># HELP kube_daemonset_labels Kubernetes labels converted to Prometheus labels.</span>
+<span class="token comment"># TYPE kube_daemonset_labels gauge</span>
+daemonset的ns+name 作为指标label
+
+<span class="token comment"># HELP kube_deployment_status_replicas The number of replicas per deployment.</span>
+<span class="token comment"># TYPE kube_deployment_status_replicas gauge</span>
+统计deployment的副本数
+label 是ns+name，value是副本数
+
+<span class="token comment"># HELP kube_deployment_status_replicas_ready The number of ready replicas per deployment.</span>
+<span class="token comment"># TYPE kube_deployment_status_replicas_ready gauge</span>
+deployment处于ready状态的副本数
+label 是ns+name，value是副本数
+
+<span class="token comment"># HELP kube_deployment_status_replicas_available The number of available replicas per deployment.</span>
+<span class="token comment"># TYPE kube_deployment_status_replicas_available gauge</span>
+deployment可用的副本数
+label 是ns+name，value是副本数
+
+<span class="token comment"># HELP kube_deployment_status_replicas_unavailable The number of unavailable replicas per deployment.</span>
+<span class="token comment"># TYPE kube_deployment_status_replicas_unavailable gauge</span>
+deployment处于不可用状态的副本数
+label 是ns+name，value是副本数
+
+<span class="token comment"># HELP kube_deployment_status_replicas_updated The number of updated replicas per deployment.</span>
+<span class="token comment"># TYPE kube_deployment_status_replicas_updated gauge</span>
+deployment更新的副本数
+统计单个deployment中有多少处于更新过了
+label 是ns+name，value是副本数
+
+<span class="token comment"># HELP kube_deployment_status_observed_generation The generation observed by the deployment controller.</span>
+<span class="token comment"># TYPE kube_deployment_status_observed_generation gauge</span>
+deployment最近一次更新的generation
+统计deployment创建后更新过多少次
+
+<span class="token comment"># HELP kube_deployment_status_condition The current status conditions of a deployment.</span>
+<span class="token comment"># TYPE kube_deployment_status_condition gauge</span>
+统计deployment处于各condition的pod数量
+condition取值Processing 、 Available
+status 取值 True False Unknown
+
+<span class="token comment"># HELP kube_deployment_spec_replicas Number of desired pods for a deployment.</span>
+<span class="token comment"># TYPE kube_deployment_spec_replicas gauge</span>
+deployment期望的副本数
+
+<span class="token comment"># HELP kube_deployment_spec_paused Whether the deployment is paused and will not be processed by the deployment controller.</span>
+<span class="token comment"># TYPE kube_deployment_spec_paused gauge</span>
+deployment 是否处于pause状态
+
+<span class="token comment"># HELP kube_deployment_spec_strategy_rollingupdate_max_unavailable Maximum number of unavailable replicas during a rolling update of a deployment.</span>
+<span class="token comment"># TYPE kube_deployment_spec_strategy_rollingupdate_max_unavailable gauge</span>
+deployment最大不可用副本数<span class="token punctuation">(</span>默认为副本数的25%<span class="token punctuation">)</span>
+
+<span class="token comment"># HELP kube_deployment_spec_strategy_rollingupdate_max_surge Maximum number of replicas that can be scheduled above the desired number of replicas during a rolling update of a deployment.</span>
+<span class="token comment"># TYPE kube_deployment_spec_strategy_rollingupdate_max_surge gauge</span>
+deployment跟新最大副本数<span class="token punctuation">(</span>默认为副本数的25%<span class="token punctuation">)</span>
+
+<span class="token comment"># HELP kube_deployment_labels Kubernetes labels converted to Prometheus labels.</span>
+<span class="token comment"># TYPE kube_deployment_labels gauge</span>
+deployment的label 
+label为ns+name 
+
+<span class="token comment"># HELP kube_endpoint_created Unix creation timestamp</span>
+<span class="token comment"># TYPE kube_endpoint_created gauge</span>
+endpoint的创建时间戳
+
+<span class="token comment"># HELP kube_endpoint_labels Kubernetes labels converted to Prometheus labels.</span>
+<span class="token comment"># TYPE kube_endpoint_labels gauge</span>
+endpoint 信息
+label ns+name
+
+<span class="token comment"># HELP kube_endpoint_address_available Number of addresses available in endpoint.</span>
+<span class="token comment"># TYPE kube_endpoint_address_available gauge</span>
+endpoint可用数量统计
+
+<span class="token comment"># HELP kube_endpoint_address_not_ready Number of addresses not ready in endpoint</span>
+<span class="token comment"># TYPE kube_endpoint_address_not_ready gauge</span>
+endpoint不可用数量统计
+
+<span class="token comment"># HELP kube_ingress_labels Kubernetes labels converted to Prometheus labels.</span>
+<span class="token comment"># TYPE kube_ingress_labels gauge</span>
+ingress 信息
+label ns+name
+<span class="token comment"># HELP kube_ingress_created Unix creation timestamp</span>
+<span class="token comment"># TYPE kube_ingress_created gauge</span>
+ingress 创建时间戳
+
+<span class="token comment"># HELP kube_ingress_metadata_resource_version Resource version representing a specific version of ingress.</span>
+<span class="token comment"># TYPE kube_ingress_metadata_resource_version gauge</span>
+ingress的resouce version
+
+<span class="token comment"># HELP kube_ingress_path Ingress host, paths and backend service information.</span>
+<span class="token comment"># TYPE kube_ingress_path gauge</span>
+ingress 路径
+label为 ns ingress <span class="token function">host</span> service_name service_port
+
+<span class="token comment"># HELP kube_ingress_tls Ingress TLS host and secret information.</span>
+<span class="token comment"># TYPE kube_ingress_tls gauge</span>
+ingress是否启用TLS
+
+<span class="token comment"># HELP kube_namespace_created Unix creation timestamp</span>
+<span class="token comment"># TYPE kube_namespace_created gauge</span>
+ns创建时间戳
+
+<span class="token comment"># HELP kube_namespace_labels Kubernetes labels converted to Prometheus labels.</span>
+<span class="token comment"># TYPE kube_namespace_labels gauge</span>
+ns的信息
+label为namespace
+
+<span class="token comment"># HELP kube_namespace_status_phase kubernetes namespace status phase.</span>
+<span class="token comment"># TYPE kube_namespace_status_phase gauge</span>
+处于不同phase的ns统计
+
+<span class="token comment"># HELP kube_node_created Unix creation timestamp</span>
+<span class="token comment"># TYPE kube_node_created gauge</span>
+node创建的时间戳
+
+<span class="token comment"># HELP kube_node_info Information about a cluster node.</span>
+<span class="token comment"># TYPE kube_node_info gauge</span>
+node信息
+label为node kernerl_version os_image container_rumtime_version kubelet_version
+kubeproxy_version pod_cidr internal_ip
+
+<span class="token comment"># HELP kube_node_labels Kubernetes labels converted to Prometheus labels.</span>
+<span class="token comment"># TYPE kube_node_labels gauge</span>
+<span class="token function">node</span> 信息
+label为node<span class="token punctuation">(</span>node<span class="token operator">=</span>nodename<span class="token punctuation">)</span>
+
+<span class="token comment"># HELP kube_node_role The role of a cluster node.</span>
+<span class="token comment"># TYPE kube_node_role gauge</span>
+node角色,是否为controller-plane 是否为master 
+label： <span class="token assign-left variable">role</span><span class="token operator">=</span><span class="token string">&quot;controll-plane&quot;</span>
+
+<span class="token comment"># HELP kube_node_spec_taint The taint of a cluster node.</span>
+<span class="token comment"># TYPE kube_node_spec_taint gauge</span>
+node是否有taint信息
+
+<span class="token comment"># HELP kube_node_spec_unschedulable Whether a node can schedule new pods.</span>
+<span class="token comment"># TYPE kube_node_spec_unschedulable gauge</span>
+node是否处于不可调度状态
+
+<span class="token comment"># HELP kube_node_status_allocatable The allocatable for different resources of a node that are available for scheduling.</span>
+<span class="token comment"># TYPE kube_node_status_allocatable gauge</span>
+node处于可分配的资源统计
+资源主要包含：cpu<span class="token punctuation">(</span>单位毫核<span class="token punctuation">)</span> memory<span class="token punctuation">(</span>单位byte<span class="token punctuation">)</span> pods<span class="token punctuation">(</span>单位整数<span class="token punctuation">)</span> 
+ephemeral_storage<span class="token punctuation">(</span>单位G<span class="token punctuation">)</span> hugepages_1Gi<span class="token punctuation">(</span>单位byte<span class="token punctuation">)</span> hugepages_2Mi<span class="token punctuation">(</span>单位byte<span class="token punctuation">)</span>
+
+<span class="token comment"># HELP kube_node_status_capacity The capacity for different resources of a node.</span>
+<span class="token comment"># TYPE kube_node_status_capacity gauge</span>
+node资源的上限
+
+<span class="token comment"># HELP kube_node_status_condition The condition of a cluster node.</span>
+<span class="token comment"># TYPE kube_node_status_condition gauge</span>
+node的资源压力状态统计
+label 为node condition status
+condition枚举
+ DiskPressure
+ MemoryPressure
+ NetworkUnavailable
+ PIDPressure
+ Ready
+ status: <span class="token boolean">true</span> <span class="token boolean">false</span> unknown
+
+
+<span class="token comment"># HELP kube_persistentvolumeclaim_labels Kubernetes labels converted to Prometheus labels.</span>
+<span class="token comment"># TYPE kube_persistentvolumeclaim_labels gauge</span>
+pvc 信息
+label为 namespace + persistentvolumeclaim 
+
+<span class="token comment"># HELP kube_persistentvolumeclaim_info Information about persistent volume claim.</span>
+<span class="token comment"># TYPE kube_persistentvolumeclaim_info gauge</span>
+pvc信息
+label为 namespace persistentvolumeclaim storageclass volumename
+
+<span class="token comment"># HELP kube_persistentvolumeclaim_status_phase The phase the persistent volume claim is currently in.</span>
+<span class="token comment"># TYPE kube_persistentvolumeclaim_status_phase gauge</span>
+pvc所处的阶段统计
+label： namespace persistentvolumeclaim phase
+phase 取值 Bound Lost Pending
+<span class="token comment"># HELP kube_persistentvolumeclaim_resource_requests_storage_bytes The capacity of storage requested by the persistent volume claim.</span>
+<span class="token comment"># TYPE kube_persistentvolumeclaim_resource_requests_storage_bytes gauge</span>
+pvc声明的大小，单位byte
+label：namespace persistentvolumeclaim
+
+<span class="token comment"># HELP kube_persistentvolumeclaim_access_mode The access mode(s) specified by the persistent volume claim.</span>
+<span class="token comment"># TYPE kube_persistentvolumeclaim_access_mode gauge</span>
+pvc的访问模式
+label: namespace persistentvolumeclaim access_mode
+<span class="token comment"># HELP kube_persistentvolume_claim_ref Information about the Persistent Volume Claim Reference.</span>
+<span class="token comment"># TYPE kube_persistentvolume_claim_ref gauge</span>
+pvc的引用计数<span class="token punctuation">(</span>被多少对象挂载<span class="token punctuation">)</span>
+
+<span class="token comment"># HELP kube_persistentvolume_labels Kubernetes labels converted to Prometheus labels.</span>
+<span class="token comment"># TYPE kube_persistentvolume_labels gauge</span>
+pv信息
+label: persistentvolume
+
+<span class="token comment"># HELP kube_persistentvolume_status_phase The phase indicates if a volume is available, bound to a claim, or released by a claim.</span>
+<span class="token comment"># TYPE kube_persistentvolume_status_phase gauge</span>
+pv所处的阶段统计 
+label persistentvolume phase
+phase枚举值: vailable Bound Failed Pending Released
+<span class="token comment"># HELP kube_persistentvolume_info Information about persistentvolume.</span>
+<span class="token comment"># TYPE kube_persistentvolume_info gauge</span>
+<span class="token function">pv</span> 信息
+label: persistentvolume storageclass gce_persistent_disk_name 
+ebs_volume_id azure_disk_name fc_wwids fc_lun fc_target_wwns 
+iscsi_target_portal iscsi_iqn iscsi_lun iscsi_initiator_name 
+nfs_server nfs_path csi_driver csi_volume_handle
+
+<span class="token comment"># HELP kube_persistentvolume_capacity_bytes Persistentvolume capacity in bytes.</span>
+<span class="token comment"># TYPE kube_persistentvolume_capacity_bytes gauge</span>
+pv容量统计
+label persistentvolume, 单位byte
+
+<span class="token comment"># HELP kube_pod_completion_time Completion time in unix timestamp for a pod.</span>
+<span class="token comment"># TYPE kube_pod_completion_time gauge</span>
+处于Error或者Unknown状态的Pod数
+
+<span class="token comment"># HELP kube_pod_container_info Information about a container in a pod.</span>
+<span class="token comment"># TYPE kube_pod_container_info gauge</span>
+container信息
+label:namespace pod uid container 
+image_spec image 
+image_id container_id
+
+<span class="token comment"># HELP kube_pod_container_resource_limits The number of requested limit resource by a container.</span>
+<span class="token comment"># TYPE kube_pod_container_resource_limits gauge</span>
+容器资源limit
+label: namespace pod uid container <span class="token function">node</span> resource unit
+value是资源数限制
+
+<span class="token comment"># HELP kube_pod_container_resource_requests The number of requested request resource by a container.</span>
+<span class="token comment"># TYPE kube_pod_container_resource_requests gauge</span>
+容器资源request
+label:namespace pod uid container <span class="token function">node</span> resource unit 
+value是资源数限制
+
+<span class="token comment"># HELP kube_pod_container_state_started Start time in unix timestamp for a pod container.</span>
+<span class="token comment"># TYPE kube_pod_container_state_started gauge</span>
+容器的启动时间戳
+label namespace pod uid container
+
+<span class="token comment"># HELP kube_pod_container_status_last_terminated_reason Describes the last reason the container was in terminated state.</span>
+<span class="token comment"># TYPE kube_pod_container_status_last_terminated_reason gauge</span>
+容器的terminated原因
+
+<span class="token comment"># HELP kube_pod_container_status_ready Describes whether the containers readiness check succeeded.</span>
+<span class="token comment"># TYPE kube_pod_container_status_ready gauge</span>
+readiness探针是否探测成功
+
+<span class="token comment"># HELP kube_pod_container_status_restarts_total The number of container restarts per container.</span>
+<span class="token comment"># TYPE kube_pod_container_status_restarts_total counter</span>
+容器的重启次数
+
+<span class="token comment"># HELP kube_pod_container_status_running Describes whether the container is currently in running state.</span>
+<span class="token comment"># TYPE kube_pod_container_status_running gauge</span>
+容器是否处于running状态
+
+<span class="token comment"># HELP kube_pod_container_status_terminated Describes whether the container is currently in terminated state.</span>
+<span class="token comment"># TYPE kube_pod_container_status_terminated gauge</span>
+容器是否处于terminated状态
+
+<span class="token comment"># HELP kube_pod_container_status_terminated_reason Describes the reason the container is currently in terminated state.</span>
+<span class="token comment"># TYPE kube_pod_container_status_terminated_reason gauge</span>
+容器teminated状态的原因 
+
+<span class="token comment"># HELP kube_pod_container_status_waiting Describes whether the container is currently in waiting state.</span>
+<span class="token comment"># TYPE kube_pod_container_status_waiting gauge</span>
+容器是否处于waiting状态
+
+<span class="token comment"># HELP kube_pod_container_status_waiting_reason Describes the reason the container is currently in waiting state.</span>
+<span class="token comment"># TYPE kube_pod_container_status_waiting_reason gauge</span>
+容器处于waiting状态的原因
+
+<span class="token comment"># HELP kube_pod_created Unix creation timestamp</span>
+<span class="token comment"># TYPE kube_pod_created gauge</span>
+pod创建的时间戳 
+
+<span class="token comment"># HELP kube_pod_info Information about pod.</span>
+<span class="token comment"># TYPE kube_pod_info gauge</span>
+pod 信息
+label:namespace pod uid host_ip pod_ip <span class="token function">node</span> 
+created_by_kind created_by_name priority_class host_network
+
+<span class="token comment"># HELP kube_pod_init_container_info Information about an init container in a pod.</span>
+<span class="token comment"># TYPE kube_pod_init_container_info gauge</span>
+init容器的信息
+label:namespace pod uid container image_spec image image_id container_id
+
+<span class="token comment"># HELP kube_pod_init_container_status_ready Describes whether the init containers readiness check succeeded.</span>
+<span class="token comment"># TYPE kube_pod_init_container_status_ready gauge</span>
+init容器是否ready<span class="token punctuation">(</span>rediness探针是否通过<span class="token punctuation">)</span>
+
+<span class="token comment"># HELP kube_pod_init_container_status_restarts_total The number of restarts for the init container.</span>
+<span class="token comment"># TYPE kube_pod_init_container_status_restarts_total counter</span>
+init容器重启的次数
+
+<span class="token comment"># HELP kube_pod_init_container_status_running Describes whether the init container is currently in running state.</span>
+<span class="token comment"># TYPE kube_pod_init_container_status_running gauge</span>
+init容器是否处于running状态
+
+<span class="token comment"># HELP kube_pod_init_container_status_terminated Describes whether the init container is currently in terminated state.</span>
+<span class="token comment"># TYPE kube_pod_init_container_status_terminated gauge</span>
+init容器是否处于terminated状态
+
+<span class="token comment"># HELP kube_pod_init_container_status_terminated_reason Describes the reason the init container is currently in terminated state.</span>
+<span class="token comment"># TYPE kube_pod_init_container_status_terminated_reason gauge</span>
+init容器处于terminated状态的原因<span class="token punctuation">(</span>Completed越多越好<span class="token punctuation">)</span>
+
+<span class="token comment"># HELP kube_pod_init_container_status_waiting Describes whether the init container is currently in waiting state.</span>
+<span class="token comment"># TYPE kube_pod_init_container_status_waiting gauge</span>
+init容器是否处于waiting状态
+
+<span class="token comment"># HELP kube_pod_init_container_status_waiting_reason Describes the reason the init container is currently in waiting state.</span>
+<span class="token comment"># TYPE kube_pod_init_container_status_waiting_reason gauge</span>
+init容器处于waiting状态的原因
+
+<span class="token comment"># HELP kube_pod_labels Kubernetes labels converted to Prometheus labels.</span>
+<span class="token comment"># TYPE kube_pod_labels gauge</span>
+pod信息
+label:namespace pod uid
+
+<span class="token comment"># HELP kube_pod_owner Information about the Pod's owner.</span>
+<span class="token comment"># TYPE kube_pod_owner gauge</span>
+pod的owner信息 <span class="token punctuation">(</span>是否为单pod owner类型 <span class="token punctuation">)</span>
+namespace pod uid owner_kind owner_name owner_is_controller
+
+<span class="token comment"># HELP kube_pod_restart_policy Describes the restart policy in use by this pod.</span>
+<span class="token comment"># TYPE kube_pod_restart_policy gauge</span>
+pod的重启策略
+label:namespace pod uid <span class="token builtin class-name">type</span>
+type: Never Always OnFailure
+<span class="token comment"># HELP kube_pod_spec_volumes_persistentvolumeclaims_info Information about persistentvolumeclaim volumes in a pod.</span>
+<span class="token comment"># TYPE kube_pod_spec_volumes_persistentvolumeclaims_info gauge</span>
+pod内pvc的信息
+label:namespace pod uid volume persistentvolumeclaim
+
+<span class="token comment"># HELP kube_pod_spec_volumes_persistentvolumeclaims_readonly Describes whether a persistentvolumeclaim is mounted read only.</span>
+<span class="token comment"># TYPE kube_pod_spec_volumes_persistentvolumeclaims_readonly gauge</span>
+pod内的pvc是否只读
+
+<span class="token comment"># HELP kube_pod_start_time Start time in unix timestamp for a pod.</span>
+<span class="token comment"># TYPE kube_pod_start_time gauge</span>
+Pod启动的时间戳<span class="token punctuation">(</span>最后一个container处于running状态的时间，区分创建时间戳<span class="token punctuation">)</span>
+
+<span class="token comment"># HELP kube_pod_status_phase The pods current phase.</span>
+<span class="token comment"># TYPE kube_pod_status_phase gauge</span>
+pod所处阶段 
+label:namespace pod uid phase 
+phase: Failed Pending Running Succeeded Unknown
+
+<span class="token comment"># HELP kube_pod_status_ready Describes whether the pod is ready to serve requests.</span>
+<span class="token comment"># TYPE kube_pod_status_ready gauge</span>
+pod是否处于ready状态
+
+<span class="token comment"># HELP kube_pod_status_reason The pod status reasons</span>
+<span class="token comment"># TYPE kube_pod_status_reason gauge</span>
+pod当前状态的原因
+
+<span class="token comment"># HELP kube_pod_status_scheduled Describes the status of the scheduling process for the pod.</span>
+<span class="token comment"># TYPE kube_pod_status_scheduled gauge</span>
+pod是否处于调度完成状态
+
+<span class="token comment"># HELP kube_pod_status_scheduled_time Unix timestamp when pod moved into scheduled status</span>
+<span class="token comment"># TYPE kube_pod_status_scheduled_time gauge</span>
+Pod调度完成的时间戳 
+
+<span class="token comment"># HELP kube_replicaset_created Unix creation timestamp</span>
+<span class="token comment"># TYPE kube_replicaset_created gauge</span>
+rs创建的时间戳
+
+<span class="token comment"># HELP kube_replicaset_status_replicas The number of replicas per ReplicaSet.</span>
+<span class="token comment"># TYPE kube_replicaset_status_replicas gauge</span>
+rs的副本数 
+
+<span class="token comment"># HELP kube_replicaset_status_ready_replicas The number of ready replicas per ReplicaSet.</span>
+<span class="token comment"># TYPE kube_replicaset_status_ready_replicas gauge</span>
+处于ready状态的副本数 
+
+<span class="token comment"># HELP kube_replicaset_status_observed_generation The generation observed by the ReplicaSet controller.</span>
+<span class="token comment"># TYPE kube_replicaset_status_observed_generation gauge</span>
+rs的更新次数
+
+<span class="token comment"># HELP kube_replicaset_spec_replicas Number of desired pods for a ReplicaSet.</span>
+<span class="token comment"># TYPE kube_replicaset_spec_replicas gauge</span>
+rs期望副本数
+
+<span class="token comment"># HELP kube_replicaset_owner Information about the ReplicaSet's owner.</span>
+<span class="token comment"># TYPE kube_replicaset_owner gauge</span>
+rs的owner 
+label: namespace replicaset owner_kind owner_name owner_is_controller
+
+<span class="token comment"># HELP kube_replicaset_labels Kubernetes labels converted to Prometheus labels.</span>
+<span class="token comment"># TYPE kube_replicaset_labels gauge</span>
+rs信息
+label: namespace replicaset
+
+<span class="token comment"># HELP kube_secret_info Information about secret.</span>
+<span class="token comment"># TYPE kube_secret_info gauge</span>
+secret info
+label: namespace <span class="token assign-left variable">secret</span><span class="token operator">=</span>
+<span class="token comment"># HELP kube_secret_type Type about secret.</span>
+<span class="token comment"># TYPE kube_secret_type gauge</span>
+secret <span class="token builtin class-name">type</span>
+label:namespace secret <span class="token builtin class-name">type</span> 
+type: helm.sh/release.v1 
+kubernetes.io/service-account-token 
+kubernetes.io/tls 
+Opaque
+
+<span class="token comment"># HELP kube_secret_created Unix creation timestamp</span>
+<span class="token comment"># TYPE kube_secret_created gauge</span>
+secret创建时间戳 
+
+<span class="token comment"># HELP kube_service_info Information about service.</span>
+<span class="token comment"># TYPE kube_service_info gauge</span>
+<span class="token function">service</span> 信息
+label: namespace <span class="token function">service</span> uid cluster_ip external_name load_balancer_ip
+
+<span class="token comment"># HELP kube_service_created Unix creation timestamp</span>
+<span class="token comment"># TYPE kube_service_created gauge</span>
+service创建时间戳
+
+<span class="token comment"># HELP kube_service_spec_type Type about service.</span>
+<span class="token comment"># TYPE kube_service_spec_type gauge</span>
+service类型
+label: namespace <span class="token function">service</span> uid <span class="token builtin class-name">type</span>
+type: NodePort ClusterIP<span class="token punctuation">..</span>.
+
+<span class="token comment"># HELP kube_service_labels Kubernetes labels converted to Prometheus labels.</span>
+<span class="token comment"># TYPE kube_service_labels gauge</span>
+service信息
+label: namespace <span class="token function">service</span> uid
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br><span class="line-number">84</span><br><span class="line-number">85</span><br><span class="line-number">86</span><br><span class="line-number">87</span><br><span class="line-number">88</span><br><span class="line-number">89</span><br><span class="line-number">90</span><br><span class="line-number">91</span><br><span class="line-number">92</span><br><span class="line-number">93</span><br><span class="line-number">94</span><br><span class="line-number">95</span><br><span class="line-number">96</span><br><span class="line-number">97</span><br><span class="line-number">98</span><br><span class="line-number">99</span><br><span class="line-number">100</span><br><span class="line-number">101</span><br><span class="line-number">102</span><br><span class="line-number">103</span><br><span class="line-number">104</span><br><span class="line-number">105</span><br><span class="line-number">106</span><br><span class="line-number">107</span><br><span class="line-number">108</span><br><span class="line-number">109</span><br><span class="line-number">110</span><br><span class="line-number">111</span><br><span class="line-number">112</span><br><span class="line-number">113</span><br><span class="line-number">114</span><br><span class="line-number">115</span><br><span class="line-number">116</span><br><span class="line-number">117</span><br><span class="line-number">118</span><br><span class="line-number">119</span><br><span class="line-number">120</span><br><span class="line-number">121</span><br><span class="line-number">122</span><br><span class="line-number">123</span><br><span class="line-number">124</span><br><span class="line-number">125</span><br><span class="line-number">126</span><br><span class="line-number">127</span><br><span class="line-number">128</span><br><span class="line-number">129</span><br><span class="line-number">130</span><br><span class="line-number">131</span><br><span class="line-number">132</span><br><span class="line-number">133</span><br><span class="line-number">134</span><br><span class="line-number">135</span><br><span class="line-number">136</span><br><span class="line-number">137</span><br><span class="line-number">138</span><br><span class="line-number">139</span><br><span class="line-number">140</span><br><span class="line-number">141</span><br><span class="line-number">142</span><br><span class="line-number">143</span><br><span class="line-number">144</span><br><span class="line-number">145</span><br><span class="line-number">146</span><br><span class="line-number">147</span><br><span class="line-number">148</span><br><span class="line-number">149</span><br><span class="line-number">150</span><br><span class="line-number">151</span><br><span class="line-number">152</span><br><span class="line-number">153</span><br><span class="line-number">154</span><br><span class="line-number">155</span><br><span class="line-number">156</span><br><span class="line-number">157</span><br><span class="line-number">158</span><br><span class="line-number">159</span><br><span class="line-number">160</span><br><span class="line-number">161</span><br><span class="line-number">162</span><br><span class="line-number">163</span><br><span class="line-number">164</span><br><span class="line-number">165</span><br><span class="line-number">166</span><br><span class="line-number">167</span><br><span class="line-number">168</span><br><span class="line-number">169</span><br><span class="line-number">170</span><br><span class="line-number">171</span><br><span class="line-number">172</span><br><span class="line-number">173</span><br><span class="line-number">174</span><br><span class="line-number">175</span><br><span class="line-number">176</span><br><span class="line-number">177</span><br><span class="line-number">178</span><br><span class="line-number">179</span><br><span class="line-number">180</span><br><span class="line-number">181</span><br><span class="line-number">182</span><br><span class="line-number">183</span><br><span class="line-number">184</span><br><span class="line-number">185</span><br><span class="line-number">186</span><br><span class="line-number">187</span><br><span class="line-number">188</span><br><span class="line-number">189</span><br><span class="line-number">190</span><br><span class="line-number">191</span><br><span class="line-number">192</span><br><span class="line-number">193</span><br><span class="line-number">194</span><br><span class="line-number">195</span><br><span class="line-number">196</span><br><span class="line-number">197</span><br><span class="line-number">198</span><br><span class="line-number">199</span><br><span class="line-number">200</span><br><span class="line-number">201</span><br><span class="line-number">202</span><br><span class="line-number">203</span><br><span class="line-number">204</span><br><span class="line-number">205</span><br><span class="line-number">206</span><br><span class="line-number">207</span><br><span class="line-number">208</span><br><span class="line-number">209</span><br><span class="line-number">210</span><br><span class="line-number">211</span><br><span class="line-number">212</span><br><span class="line-number">213</span><br><span class="line-number">214</span><br><span class="line-number">215</span><br><span class="line-number">216</span><br><span class="line-number">217</span><br><span class="line-number">218</span><br><span class="line-number">219</span><br><span class="line-number">220</span><br><span class="line-number">221</span><br><span class="line-number">222</span><br><span class="line-number">223</span><br><span class="line-number">224</span><br><span class="line-number">225</span><br><span class="line-number">226</span><br><span class="line-number">227</span><br><span class="line-number">228</span><br><span class="line-number">229</span><br><span class="line-number">230</span><br><span class="line-number">231</span><br><span class="line-number">232</span><br><span class="line-number">233</span><br><span class="line-number">234</span><br><span class="line-number">235</span><br><span class="line-number">236</span><br><span class="line-number">237</span><br><span class="line-number">238</span><br><span class="line-number">239</span><br><span class="line-number">240</span><br><span class="line-number">241</span><br><span class="line-number">242</span><br><span class="line-number">243</span><br><span class="line-number">244</span><br><span class="line-number">245</span><br><span class="line-number">246</span><br><span class="line-number">247</span><br><span class="line-number">248</span><br><span class="line-number">249</span><br><span class="line-number">250</span><br><span class="line-number">251</span><br><span class="line-number">252</span><br><span class="line-number">253</span><br><span class="line-number">254</span><br><span class="line-number">255</span><br><span class="line-number">256</span><br><span class="line-number">257</span><br><span class="line-number">258</span><br><span class="line-number">259</span><br><span class="line-number">260</span><br><span class="line-number">261</span><br><span class="line-number">262</span><br><span class="line-number">263</span><br><span class="line-number">264</span><br><span class="line-number">265</span><br><span class="line-number">266</span><br><span class="line-number">267</span><br><span class="line-number">268</span><br><span class="line-number">269</span><br><span class="line-number">270</span><br><span class="line-number">271</span><br><span class="line-number">272</span><br><span class="line-number">273</span><br><span class="line-number">274</span><br><span class="line-number">275</span><br><span class="line-number">276</span><br><span class="line-number">277</span><br><span class="line-number">278</span><br><span class="line-number">279</span><br><span class="line-number">280</span><br><span class="line-number">281</span><br><span class="line-number">282</span><br><span class="line-number">283</span><br><span class="line-number">284</span><br><span class="line-number">285</span><br><span class="line-number">286</span><br><span class="line-number">287</span><br><span class="line-number">288</span><br><span class="line-number">289</span><br><span class="line-number">290</span><br><span class="line-number">291</span><br><span class="line-number">292</span><br><span class="line-number">293</span><br><span class="line-number">294</span><br><span class="line-number">295</span><br><span class="line-number">296</span><br><span class="line-number">297</span><br><span class="line-number">298</span><br><span class="line-number">299</span><br><span class="line-number">300</span><br><span class="line-number">301</span><br><span class="line-number">302</span><br><span class="line-number">303</span><br><span class="line-number">304</span><br><span class="line-number">305</span><br><span class="line-number">306</span><br><span class="line-number">307</span><br><span class="line-number">308</span><br><span class="line-number">309</span><br><span class="line-number">310</span><br><span class="line-number">311</span><br><span class="line-number">312</span><br><span class="line-number">313</span><br><span class="line-number">314</span><br><span class="line-number">315</span><br><span class="line-number">316</span><br><span class="line-number">317</span><br><span class="line-number">318</span><br><span class="line-number">319</span><br><span class="line-number">320</span><br><span class="line-number">321</span><br><span class="line-number">322</span><br><span class="line-number">323</span><br><span class="line-number">324</span><br><span class="line-number">325</span><br><span class="line-number">326</span><br><span class="line-number">327</span><br><span class="line-number">328</span><br><span class="line-number">329</span><br><span class="line-number">330</span><br><span class="line-number">331</span><br><span class="line-number">332</span><br><span class="line-number">333</span><br><span class="line-number">334</span><br><span class="line-number">335</span><br><span class="line-number">336</span><br><span class="line-number">337</span><br><span class="line-number">338</span><br><span class="line-number">339</span><br><span class="line-number">340</span><br><span class="line-number">341</span><br><span class="line-number">342</span><br><span class="line-number">343</span><br><span class="line-number">344</span><br><span class="line-number">345</span><br><span class="line-number">346</span><br><span class="line-number">347</span><br><span class="line-number">348</span><br><span class="line-number">349</span><br><span class="line-number">350</span><br><span class="line-number">351</span><br><span class="line-number">352</span><br><span class="line-number">353</span><br><span class="line-number">354</span><br><span class="line-number">355</span><br><span class="line-number">356</span><br><span class="line-number">357</span><br><span class="line-number">358</span><br><span class="line-number">359</span><br><span class="line-number">360</span><br><span class="line-number">361</span><br><span class="line-number">362</span><br><span class="line-number">363</span><br><span class="line-number">364</span><br><span class="line-number">365</span><br><span class="line-number">366</span><br><span class="line-number">367</span><br><span class="line-number">368</span><br><span class="line-number">369</span><br><span class="line-number">370</span><br><span class="line-number">371</span><br><span class="line-number">372</span><br><span class="line-number">373</span><br><span class="line-number">374</span><br><span class="line-number">375</span><br><span class="line-number">376</span><br><span class="line-number">377</span><br><span class="line-number">378</span><br><span class="line-number">379</span><br><span class="line-number">380</span><br><span class="line-number">381</span><br><span class="line-number">382</span><br><span class="line-number">383</span><br><span class="line-number">384</span><br><span class="line-number">385</span><br><span class="line-number">386</span><br><span class="line-number">387</span><br><span class="line-number">388</span><br><span class="line-number">389</span><br><span class="line-number">390</span><br><span class="line-number">391</span><br><span class="line-number">392</span><br><span class="line-number">393</span><br><span class="line-number">394</span><br><span class="line-number">395</span><br><span class="line-number">396</span><br><span class="line-number">397</span><br><span class="line-number">398</span><br><span class="line-number">399</span><br><span class="line-number">400</span><br><span class="line-number">401</span><br><span class="line-number">402</span><br><span class="line-number">403</span><br><span class="line-number">404</span><br><span class="line-number">405</span><br><span class="line-number">406</span><br><span class="line-number">407</span><br><span class="line-number">408</span><br><span class="line-number">409</span><br><span class="line-number">410</span><br><span class="line-number">411</span><br><span class="line-number">412</span><br><span class="line-number">413</span><br><span class="line-number">414</span><br><span class="line-number">415</span><br><span class="line-number">416</span><br><span class="line-number">417</span><br><span class="line-number">418</span><br><span class="line-number">419</span><br><span class="line-number">420</span><br><span class="line-number">421</span><br><span class="line-number">422</span><br><span class="line-number">423</span><br><span class="line-number">424</span><br><span class="line-number">425</span><br><span class="line-number">426</span><br><span class="line-number">427</span><br><span class="line-number">428</span><br><span class="line-number">429</span><br><span class="line-number">430</span><br><span class="line-number">431</span><br><span class="line-number">432</span><br><span class="line-number">433</span><br><span class="line-number">434</span><br><span class="line-number">435</span><br><span class="line-number">436</span><br><span class="line-number">437</span><br><span class="line-number">438</span><br><span class="line-number">439</span><br><span class="line-number">440</span><br><span class="line-number">441</span><br><span class="line-number">442</span><br><span class="line-number">443</span><br><span class="line-number">444</span><br><span class="line-number">445</span><br><span class="line-number">446</span><br><span class="line-number">447</span><br><span class="line-number">448</span><br><span class="line-number">449</span><br><span class="line-number">450</span><br><span class="line-number">451</span><br><span class="line-number">452</span><br><span class="line-number">453</span><br><span class="line-number">454</span><br><span class="line-number">455</span><br><span class="line-number">456</span><br><span class="line-number">457</span><br><span class="line-number">458</span><br><span class="line-number">459</span><br><span class="line-number">460</span><br><span class="line-number">461</span><br><span class="line-number">462</span><br><span class="line-number">463</span><br><span class="line-number">464</span><br><span class="line-number">465</span><br><span class="line-number">466</span><br><span class="line-number">467</span><br><span class="line-number">468</span><br><span class="line-number">469</span><br><span class="line-number">470</span><br><span class="line-number">471</span><br><span class="line-number">472</span><br><span class="line-number">473</span><br><span class="line-number">474</span><br><span class="line-number">475</span><br><span class="line-number">476</span><br><span class="line-number">477</span><br><span class="line-number">478</span><br><span class="line-number">479</span><br><span class="line-number">480</span><br><span class="line-number">481</span><br><span class="line-number">482</span><br><span class="line-number">483</span><br><span class="line-number">484</span><br><span class="line-number">485</span><br></div></div><h3 id="cadvisor-node上负载-指标梳理"><a href="#cadvisor-node上负载-指标梳理" class="header-anchor">#</a> cadvisor(node上负载)指标梳理</h3> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code><span class="token comment"># HELP container_cpu_cfs_periods_total Number of elapsed enforcement period intervals.</span>
+<span class="token comment"># TYPE container_cpu_cfs_periods_total counter</span>
+cfs时间片总数
+完全公平调度的时间片总数<span class="token punctuation">(</span>分配到cpu的时间片数<span class="token punctuation">)</span>
+<span class="token comment"># HELP container_cpu_cfs_throttled_periods_total Number of throttled period intervals.</span>
+<span class="token comment"># TYPE container_cpu_cfs_throttled_periods_total counter</span>
+容器被throttle的时间片总数
+
+<span class="token comment"># HELP container_cpu_cfs_throttled_seconds_total Total time duration the container has been throttled.</span>
+<span class="token comment"># TYPE container_cpu_cfs_throttled_seconds_total counter</span>
+容器被throttle的时间
+
+<span class="token comment"># HELP container_file_descriptors Number of open file descriptors for the container.</span>
+<span class="token comment"># TYPE container_file_descriptors gauge</span>
+容器打开的fd数
+
+<span class="token comment"># HELP container_memory_usage_bytes Current memory usage in bytes, including all memory regardless of when it was accessed</span>
+<span class="token comment"># TYPE container_memory_usage_bytes gauge</span>
+容器内存使用量，单位byte 
+
+<span class="token comment"># HELP container_network_receive_bytes_total Cumulative count of bytes received</span>
+<span class="token comment"># TYPE container_network_receive_bytes_total counter</span>
+容器入方向的流量
+
+<span class="token comment"># HELP container_network_transmit_bytes_total Cumulative count of bytes transmitted</span>
+<span class="token comment"># TYPE container_network_transmit_bytes_total counter</span>
+容器出方向的流量
+
+<span class="token comment"># HELP container_spec_cpu_period CPU period of the container.</span>
+<span class="token comment"># TYPE container_spec_cpu_period gauge</span>
+容器的cpu调度单位时间
+
+<span class="token comment"># HELP container_spec_cpu_quota CPU quota of the container.</span>
+<span class="token comment"># TYPE container_spec_cpu_quota gauge</span>
+容器的cpu规格 ，除以单位调度时间可以计算核数
+
+
+<span class="token comment"># HELP container_spec_memory_limit_bytes Memory limit for the container.</span>
+<span class="token comment"># TYPE container_spec_memory_limit_bytes gauge</span>
+容器的内存规格，单位byte
+
+<span class="token comment"># HELP container_threads Number of threads running inside the container</span>
+<span class="token comment"># TYPE container_threads gauge</span>
+容器当前的线程数
+<span class="token comment"># HELP container_threads_max Maximum number of threads allowed inside the container, infinity if value is zero</span>
+<span class="token comment"># TYPE container_threads_max gauge</span>
+允许容器启动的最大线程数
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br></div></div></div></div>  <div class="page-edit"><div class="edit-link"><a href="https://github.com/zhangst94/zhangst94.github.io/edit/main/docs/01.运维/50.Nightingale/06.K8S监控指标梳理.md" target="_blank" rel="noopener noreferrer">编辑</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <!----> <div class="last-updated"><span class="prefix">上次更新:</span> <span class="time">2023/05/22, 08:03:05</span></div></div> <div class="page-nav-wapper"><div class="page-nav-centre-wrap"><a href="/pages/8ca8ff/" class="page-nav-centre page-nav-centre-prev"><div class="tooltip">Nightifale-n9e-helm部署</div></a> <a href="/pages/57d897/" class="page-nav-centre page-nav-centre-next"><div class="tooltip">Nightingale-k8s组件监控（上）</div></a></div> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/pages/8ca8ff/" class="prev">Nightifale-n9e-helm部署</a></span> <span class="next"><a href="/pages/57d897/">Nightingale-k8s组件监控（上）</a>→
+      </span></p></div></div></div> <div class="article-list"><div class="article-title"><a href="/archives/" class="iconfont icon-bi">最近更新</a></div> <div class="article-wrapper"><dl><dd>01</dd> <dt><a href="/pages/5aff14/"><div>
+            提问的智慧
+            <!----></div></a> <span class="date">07-01</span></dt></dl><dl><dd>02</dd> <dt><a href="/pages/cc33f8/"><div>
+            混沌工程
+            <!----></div></a> <span class="date">07-01</span></dt></dl><dl><dd>03</dd> <dt><a href="/pages/b606dc/"><div>
+            Docker In Docker
+            <!----></div></a> <span class="date">07-01</span></dt></dl> <dl><dd></dd> <dt><a href="/archives/" class="more">更多文章&gt;</a></dt></dl></div></div></main></div> <div class="footer"><div class="icons"><a href="mailto:12345@qq.com" title="发邮件" target="_blank" class="iconfont icon-youjian"></a><a href="https://github.com/zhangst94" title="GitHub" target="_blank" class="iconfont icon-github"></a><a href="https://music.163.com/#/playlist?id=755597173" title="听音乐" target="_blank" class="iconfont icon-erji"></a></div> 
+  Theme by
+  <a href="https://github.com/xugaoyi/vuepress-theme-vdoing" target="_blank" title="本站主题">Vdoing</a> 
+    | Copyright © 2021-2023
+    <span>zhang | <a href="https://github.com/zhangst94/zhangst94.github.io/blob/main/LICENSE" target="_blank">MIT License</a></span></div> <div class="buttons"><div title="返回顶部" class="button blur go-to-top iconfont icon-fanhuidingbu" style="display:none;"></div> <div title="去评论" class="button blur go-to-comment iconfont icon-pinglun" style="display:none;"></div> <div title="主题模式" class="button blur theme-mode-but iconfont icon-zhuti"><ul class="select-box" style="display:none;"><li class="iconfont icon-zidong">
+          跟随系统
+        </li><li class="iconfont icon-rijianmoshi">
+          浅色模式
+        </li><li class="iconfont icon-yejianmoshi">
+          深色模式
+        </li><li class="iconfont icon-yuedu">
+          阅读模式
+        </li></ul></div></div> <!----> <!----> <!----></div><div class="global-ui"><div></div></div></div>
+    <script src="/assets/js/app.29507997.js" defer></script><script src="/assets/js/2.e4478836.js" defer></script><script src="/assets/js/112.2dceab0e.js" defer></script>
+  </body>
+</html>

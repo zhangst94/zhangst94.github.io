@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[100],{422:function(t,n,s){"use strict";s.r(n);var o=s(4),i=Object(o.a)({},(function(){var t=this._self._c;return t("ContentSlotsDistributor",{attrs:{"slot-key":this.$parent.slotKey}},[t("p",[this._v("MongoDB")]),this._v(" "),t("p",[this._v("参考地址：http://t.cn/AiOcP9Cy")])])}),[],!1,null,null,null);n.default=i.exports}}]);
