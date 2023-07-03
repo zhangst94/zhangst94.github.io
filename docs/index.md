@@ -13,7 +13,7 @@ features: # 可选的
     link: /yunwei/ # 可选
 #    imgUrl: /img/web.png # 可选
   - title: 工作
-    details: shell、python、golang
+    details: windows、Mac、等
     link: /work/
 #    imgUrl: /img/ui.png
   - title: 读书笔记

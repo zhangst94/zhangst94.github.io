@@ -285,26 +285,26 @@ export default defineConfig4CustomTheme<VdoingThemeConfig>({
         },
       },
     ],
-//    [
-//      'vuepress-plugin-comment', // 评论
-//      {
-//        choosen: 'gitalk',
-//        options: {
-//          clientID: '68e3c58f5c23861fddb9',
-//          clientSecret: '334d2a92cf60a2cd877809b9486423cb9f6eeb96',
-//          repo: 'zhangst94.github.io', // GitHub 仓库
-//          owner: 'zhangst94', // GitHub仓库所有者
-//          admin: ['zhangst94'], // 对仓库有写权限的人
-//          // distractionFreeMode: true,
-//          pagerDirection: 'last', // 'first'正序 | 'last'倒序
-//          id: '<%- (frontmatter.permalink || frontmatter.to.path).slice(-16) %>', //  页面的唯一标识,长度不能超过50
-//          title: '「评论」<%- frontmatter.title %>', // GitHub issue 的标题
-//          labels: ['Gitalk', 'Comment'], // GitHub issue 的标签
-//          body:
-//            '页面：<%- window.location.origin + (frontmatter.to.path || window.location.pathname) %>', // GitHub issue 的内容
-//        },
-//      },
-//    ],
+    [
+      'vuepress-plugin-comment', // 评论
+      {
+        choosen: 'gitalk',
+        options: {
+          clientID: '592a6cb5f26afe3b7c35',
+          clientSecret: '19eb96185b96864a83b8a411cffe89397b7d5598',
+          repo: 'zhangst94.github.io', // GitHub 仓库
+          owner: 'zhangst94', // GitHub仓库所有者
+          admin: ['zhangst94'], // 对仓库有写权限的人
+          // distractionFreeMode: true,
+          pagerDirection: 'last', // 'first'正序 | 'last'倒序
+          id: '<%- (frontmatter.permalink || frontmatter.to.path).slice(-16) %>', //  页面的唯一标识,长度不能超过50
+          title: '「评论」<%- frontmatter.title %>', // GitHub issue 的标题
+          labels: ['Gitalk', 'Comment'], // GitHub issue 的标签
+          body:
+            '页面：<%- window.location.origin + (frontmatter.to.path || window.location.pathname) %>', // GitHub issue 的内容
+        },
+      },
+    ],
 
 
 
